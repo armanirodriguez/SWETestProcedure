@@ -10,7 +10,6 @@ data = [
     [3, "Payment",      1.0,        True]
 ]
 
-
 @app.route('/')
 def home():
     return render_template("home.html", title="Home Page")
@@ -20,4 +19,5 @@ def procedures():
     return render_template("procedures.html", title="Procedures", data=data)
 
 if __name__ == "__main__":
+    print("running")
     app.run(debug=True)
