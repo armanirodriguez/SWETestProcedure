@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'c63821f68e03ce4b454ac8a41a93'
 # example test data
 data = [
 #   id  name            version      approved   
