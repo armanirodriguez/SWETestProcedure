@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-bottom m-3">Create a new procedure</legend>
+        <div class="form-group m-3">
+            {{ form.name.label(class="form-control-label") }}
+
+            {% if form.name.erros %}
+                {{ form.name(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.name.erros %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.name(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group m-3">
+            {{ form.version.label(class="form-control-label") }}
+            {% if form.version.erros %}
+                {{ form.version(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.version.erros %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.version(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group m-3">
+            {{ form.approval.label(class="form-control-label") }}
+            {% if form.approval.erros %}
+                {{ form.approval(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.approval.erros %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.approval() }}
+            {% endif %}
+        </div>
+    </fieldset>
+    <div class="form-group m-3">
+            {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.cancel(class="btn btn-outline-danger") }}
+    </div>
+</form>
+{% endblock content %}
