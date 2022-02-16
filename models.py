@@ -9,7 +9,7 @@ from app import app,db
 
 class TestProcedure(db.Model):
     __tablename__ = 'testprocedure'
-    id = db.Column(db.Integer, primary_key=True)
+    pk_procedure = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     version = db.Column(db.String(5), nullable=False)
     approval = db.Column(db.Boolean, nullable=False)
@@ -23,9 +23,9 @@ class TestProcedure(db.Model):
         
 class TestStep(db.Model):
     __tablename__ = 'teststep'
-    id = db.Column(db.Integer, primary_key=True)
+    pk_step = db.Column(db.Integer, primary_key=True)
     test_step = db.Column(db.Text, nullable=False) # actual test step
-    procedure_id = db.Column(db.Integer, db.ForeignKey('testprocedure.id'))
+    fk_TestStep_TestProcedure = db.Column(db.Integer, db.ForeignKey('testprocedure.id'))
     procedure = db.relationship('TestProcedure', backref="testprocedure")
     def __init__(self, test_step, procedure_id):
         self.test_step = test_step
