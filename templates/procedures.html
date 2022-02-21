@@ -14,8 +14,8 @@
     <tbody>
     {% for entry in dataTable %}
         <tr>
-            <th scope="row">{{ entry.id }}</th>
-            <td>{{ entry.name }}</td>
+            <th scope="row">{{ entry.pk_prodID }}</th>
+            <td><a href="{{ url_for('edit', id=entry.pk_prodID) }}">{{ entry.prodName }}</a></td>
             <td>{{ entry.version }}</td>
             {% if entry.approval %}
                 <td> <button style="padding: 1px 1px;pointer-events: none;" type="button" class="btn btn-success">Approved</button> </td>
