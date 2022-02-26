@@ -1,0 +1,17 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="{{ url_for('edit', id=editProd.id) }}">
+    {{ editForm.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-bottom m-3">Update a procedure</legend>
+        {{ render_field(editForm.formProcedureName, class="form-control form-control-lg", value=editProd.name) }}
+        {{ render_field(editForm.formNotes, class="form-control form-control-lg", value=editProd.notes)}}
+        {{ render_field(editForm.formApproval) }}
+    </fieldset>
+    <div class="form-group m-3">
+            {{ editForm.submit(class="btn btn-outline-info") }}
+            {{ editForm.cancel(class="btn btn-outline-danger") }}
+    </div>
+</form>
+{% endblock content %}

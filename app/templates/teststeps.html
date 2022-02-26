@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="text-left m-3">Test Procedure: {{ procedure.name}} <a href="{{ url_for('new_step', procedure_id=procedure.id) }}"><button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="" >Add Step</button></a></h2>
+
+<table class="table table-hover table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for step in procedure.steps %}
+        <tr>
+            <th scope="row">{{ step.id }}</th>
+            <td>{{ step.name }}</td>
+            {% if step.status < 0 %}
+                <td><img src="../static/img/circle-fill.svg" alt="Failed"></a></td>
+            {% elif step.status > 0 %}
+            <td><img src="../static/img/check2-all.svg" alt="Passed"></a></td>
+            {% else %}
+            <td><img src="../static/img/clock-fill.svg" alt="Pending"></a></td>
+            {% endif %}
+            <td>
+            <form method="post" action="{{ url_for('delete_step', id=step.id) }}">
+                <input type="image" name="submit" src="../static/img/trash3-fill.svg"></button>
+            </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

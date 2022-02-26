@@ -1,0 +1,18 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="{{ url_for('new_procedure') }}">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-bottom m-3">Create a new procedure</legend>
+        {{ render_field(form.formProcedureName, class="form-control form-control-lg") }}
+        {{ render_field(form.formNotes, class="form-control form-control-lg")}}
+        {{ render_field(form.formApproval) }}
+        
+    </fieldset>
+    <div class="form-group m-3">
+            {{ form.submit(class="btn btn-outline-info") }}
+            {{ form.cancel(class="btn btn-outline-danger") }}
+    </div>
+</form>
+{% endblock content %}
