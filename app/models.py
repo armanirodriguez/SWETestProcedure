@@ -4,6 +4,7 @@ from app import app,db
 class TestProcedure(db.Model):
     __tablename__ = 'TestProcedure'
     id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('Project.id'))
     name = db.Column(db.Text, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     approval = db.Column(db.Boolean, nullable=False)
@@ -17,3 +18,8 @@ class TestStep(db.Model):
     name = db.Column(db.Text, nullable=False)
     status = db.Column(db.Integer, nullable=False, default=0)
     procedure_id = db.Column(db.Integer, db.ForeignKey('TestProcedure.id'))
+
+class Project(db.Model):
+    __tablename__ = 'Project'
+    id = db.Column(db.Integer, primary_key=True)
+    procedures = db.relationship('TestProcedure', backref='project', lazy=True)
