@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2 class="text-left m-3">Test Procedures <a href="{{ url_for('new_procedure') }}"><button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="" >New Procedure</button></a></h2>
+
+<div id="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <h3 style="white-space: nowrap;">Test Procedures</h3>
+      </div>
+      <div class="col-10">
+        <span class="float-right"><a href="{{ url_for('new_procedure') }}"><button type="button" class="btn btn-success float-end text-end" data-toggle="modal" data-target="">New Procedure</button></a></span>
+      </div>
+    </div>
+</div>
+
 <!-- Button trigger modal -->
 
 
