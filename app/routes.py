@@ -27,13 +27,17 @@ def procedure(id):
     print(steps)
     return render_template("teststeps.html", procedure=current_procedure)
 
-@app.route("/procedure/<int:procedure_id>/new_step", methods=['GET','POST'])
+@app.route("/procedure/<int:procedure_id>/newstep", methods=['GET','POST'])
 def new_step(procedure_id):
-    form = stepForm()
+    form = StepForm()
     if form.validate_on_submit():
         step_name = form.step_name.data
+        instructions = form.instructions.data
+        pass_condition = form.pass_condition.data
         new_step = TestStep(name=step_name,
-                            procedure_id=procedure_id)
+                            procedure_id=procedure_id,
+                            instructions=instructions,
+                            pass_condition=pass_condition)
         db.session.add(new_step)
         db.session.commit()
         return redirect(url_for('procedure',id=procedure_id))
@@ -41,13 +45,13 @@ def new_step(procedure_id):
 
 
 
-@app.route("/new_procedure", methods=['GET', 'POST'])
+@app.route("/newprocedure", methods=['GET', 'POST'])
 def new_procedure():
-    form = procedureForm()
+    form = ProcedureForm()
     if form.validate_on_submit():
-        procedure_name = form.formProcedureName.data
-        approval = form.formApproval.data
-        notes = form.formNotes.data
+        procedure_name = form.procedure_name.data
+        approval = form.approval.data
+        notes = form.notes.data
         myData = TestProcedure(name = procedure_name,
                                approval = approval,
                                notes = notes)
@@ -61,16 +65,16 @@ def new_procedure():
 
 @app.route("/edit/<int:id>", methods=['GET', 'POST'])
 def edit(id):
-    editForm = procedureForm()
+    editForm = ProcedureForm()
     editProd = TestProcedure.query.get_or_404(id)
     editForm.formApproval.checked = editProd.approval
     if editForm.validate_on_submit():
-        editProd.name = editForm.formProcedureName.data
-        editProd.approval = editForm.formApproval.data
-        editProd.notes = editForm.formNotes.data
+        editProd.name = editForm.procedure_name.data
+        editProd.approval = editForm.approval.data
+        editProd.notes = editForm.notes.data
 
         db.session.commit()
-        flash(f'Procedure {editForm.formProcedureName.data} updated!', 'dark')
+        flash(f'Procedure {editForm.procedure_name.data} updated!', 'dark')
         return redirect(url_for('procedures'))
     return render_template("edit.html", title="Edit Procedure", editForm=editForm, editProd=editProd)
 
@@ -82,7 +86,7 @@ def delete_procedure(id):
     flash("Procedure successfully deleted!",'success')
     return redirect(url_for('procedures'))
 
-@app.route("/delete_step/<int:id>", methods=['POST'])
+@app.route("/deletestep/<int:id>", methods=['POST'])
 def delete_step(id):
     step = TestStep.query.get_or_404(id)
     procedure_id = step.procedure_id
@@ -91,6 +95,34 @@ def delete_step(id):
     flash("Step successfully deleted!",'success')
     return redirect(url_for('procedure',id=procedure_id))
 
+@app.route("/procedure/<int:id>/run", methods=['POST','GET'])
+def run_test_procedure(id):
+    procedure = TestProcedure.query.get_or_404(id)
+    procedure_name = procedure.name
+    steps = procedure.steps
+    if len(steps) == 0:
+        flash("There are currently no test steps to run", "warning")
+        return redirect(url_for('procedure', id=id))
+    form = TestRunFormFactory(steps).get_test_run_form()
+    if form.validate_on_submit():
+        for field_name,value in form.data.items():
+            try:
+                step_id = int(field_name)
+            except ValueError:
+                continue
+            test_step = TestStep.query.get(step_id)
+            if value == "pass":
+                test_step.status = 1
+            elif value == "fail":
+                test_step.status = -1
+        db.session.commit()
+        flash("Test run completed",'success')
+        return redirect(url_for('procedure', id=id))
+    return render_template("runtest.html", id=id, form=form, steps=steps, procedure_name=procedure_name)
+
+    
+    
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

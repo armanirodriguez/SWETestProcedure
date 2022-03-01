@@ -16,6 +16,8 @@ class TestStep(db.Model):
     __tablename__ = 'TestStep'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
+    instructions = db.Column(db.Text, nullable=False)
+    pass_condition = db.Column(db.Text, nullable=False)
     status = db.Column(db.Integer, nullable=False, default=0)
     procedure_id = db.Column(db.Integer, db.ForeignKey('TestProcedure.id'))
 
@@ -23,3 +25,4 @@ class Project(db.Model):
     __tablename__ = 'Project'
     id = db.Column(db.Integer, primary_key=True)
     procedures = db.relationship('TestProcedure', backref='project', lazy=True)
+

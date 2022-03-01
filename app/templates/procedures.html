@@ -34,15 +34,17 @@
             <td><a href="{{ url_for('procedure', id=procedure.id) }}">{{ procedure.name }}</a></td>
             <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
             {% if procedure.approval %}
-                <td> <button style="padding: 1px 1px;pointer-events: none;" type="button" class="btn btn-success">Approved</button> </td>
+                <td> <a href="#" class="badge badge-success">Approved</a> </td>
             {% else %}
-                <td> <button style="padding: 1px 1px;pointer-events: none;" type="button" class="btn btn-danger">Not Approved</button> </td>
+                <td> <a href="#" class="badge badge-danger">Not Approved</a> </td>
             {% endif %}
-            <td><a href="{{ url_for('edit', id=procedure.id) }}"><img src="../static/img/pencil-square.svg" alt="Edit"></a></td>
             <td>
-            <form method="post" action="{{ url_for('delete_procedure', id=procedure.id) }}">
-                <input type="image" name="submit" src="../static/img/trash3-fill.svg"></button>
-            </form>
+                <a href="{{ url_for('edit', id=procedure.id) }}"><img src="../static/img/pencil-square.svg" alt="Edit"></a>
+            </td>
+            <td>
+                <form method="post" action="{{ url_for('delete_procedure', id=procedure.id) }}">
+                    <input type="image" name="submit" src="../static/img/trash3-fill.svg"></button>
+                </form>
             </td>
         </tr>
     {% endfor %}

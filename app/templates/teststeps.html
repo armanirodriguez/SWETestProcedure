@@ -1,14 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div id="container-fluid">
+<div id="container">
     <div class="row">
-      <div class="col-2">
-        <h3 style="white-space: nowrap;">Test Procedure: {{ procedure.name}}</h3>
-      </div>
-      <div class="col-10">
-        <span class="float-right"><a href="{{ url_for('new_step', procedure_id=procedure.id) }}"><button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Add Step</button></a></span>
-      </div>
+        <div class="col-sm">
+            <h3 style="white-space: nowrap;">Test Procedure: {{ procedure.name}}</h3>
+        </div>
+        <div class="col-6">
+            <a class="float-right" href="{{ url_for('run_test_procedure', id=procedure.id) }}">
+                <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Run Tests</button>
+            </a>
+        </div>
+        <div class="col">
+            <a class="float-left" href="{{ url_for('new_step', procedure_id=procedure.id) }}">
+                <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Add Step</button>
+            </a>
+        </div>
     </div>
 </div>
 
