@@ -1,5 +1,5 @@
 from datetime import datetime
-from app import app,db
+from app import db
 
 class TestProcedure(db.Model):
     __tablename__ = 'TestProcedure'

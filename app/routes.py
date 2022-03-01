@@ -1,5 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, url_for, flash, redirect
 
 from app.forms import *
 from app.models import *
@@ -65,17 +64,17 @@ def new_procedure():
 @app.route("/edit/<int:id>", methods=['GET', 'POST'])
 def edit(id):
     editForm = ProcedureForm()
-    editProd = TestProcedure.query.get_or_404(id)
-    editForm.formApproval.checked = editProd.approval
+    edit_procedure = TestProcedure.query.get_or_404(id)
+    editForm.approval.checked = edit_procedure.approval
     if editForm.validate_on_submit():
-        editProd.name = editForm.procedure_name.data
-        editProd.approval = editForm.approval.data
-        editProd.notes = editForm.notes.data
+        edit_procedure.name = editForm.procedure_name.data
+        edit_procedure.approval = editForm.approval.data
+        edit_procedure.notes = editForm.notes.data
 
         db.session.commit()
         flash(f'Procedure {editForm.procedure_name.data} updated!', 'dark')
         return redirect(url_for('procedures'))
-    return render_template("edit.html", title="Edit Procedure", editForm=editForm, editProd=editProd)
+    return render_template("edit.html", title="Edit Procedure", editForm=editForm, edit_procedure=edit_procedure)
 
 @app.route("/delete_procedure/<int:id>", methods=['POST'])
 def delete_procedure(id):
