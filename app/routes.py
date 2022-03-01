@@ -24,7 +24,6 @@ def procedures():
 def procedure(id):
     current_procedure = TestProcedure.query.get_or_404(id)
     steps = current_procedure.steps
-    print(steps)
     return render_template("teststeps.html", procedure=current_procedure)
 
 @app.route("/procedure/<int:procedure_id>/newstep", methods=['GET','POST'])

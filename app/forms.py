@@ -30,6 +30,4 @@ class TestRunFormFactory():
         setattr(TestRunForm,"submit",SubmitField('Save'))
         setattr(TestRunForm,"cancel",SubmitField('Cancel'))
         form = TestRunForm()
-        for field in form:
-            print(field)
         return TestRunForm()
