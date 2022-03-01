@@ -119,10 +119,3 @@ def run_test_procedure(id):
         flash("Test run completed",'success')
         return redirect(url_for('procedure', id=id))
     return render_template("runtest.html", id=id, form=form, steps=steps, procedure_name=procedure_name)
-
-    
-    
-    
-
-if __name__ == "__main__":
-    app.run(debug=True)
