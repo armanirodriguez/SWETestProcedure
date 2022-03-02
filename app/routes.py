@@ -13,12 +13,13 @@ def home():
 # ===== Projects ===== #
 @app.route("/projects", methods=['GET','POST'])
 def projects():
-    projects = Project.query.all()
     form = ProjectForm()
     if form.validate_on_submit():
         new_project = Project(name=form.project_name.data)
         db.session.add(new_project)
         db.session.commit()
+        return redirect(url_for('projects'))
+    projects = Project.query.all()
     return render_template("projects.html",title="projects",form=form,projects=projects)
 
 
