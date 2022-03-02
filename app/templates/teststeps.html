@@ -26,9 +26,10 @@
 <table class="table table-hover table-striped table-dark">
     <thead>
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">Number</th>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
+            <th scope="col">Edit</th>
             <th scope="col">Delete</th>
         </tr>
     </thead>
@@ -44,6 +45,9 @@
             {% else %}
             <td><img src="/static/img/clock-fill.svg" alt="Pending"></a></td>
             {% endif %}
+                <td>
+                    <a href="{{ url_for('edit_step', step_id=step.id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
+                </td>
             <td>
             <form method="post" action="{{ url_for('delete_step', step_id=step.id) }}">
                 <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>

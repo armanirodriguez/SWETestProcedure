@@ -11,7 +11,7 @@ class ProcedureForm(FlaskForm):
 
 class StepForm(FlaskForm):
     step_name = StringField('Step Name', validators=[DataRequired()])
-    instructions = StringField('Test Instructions', widget=TextArea(),validators=[DataRequired()])
+    instructions = StringField('Test Instructions', validators=[DataRequired()])
     pass_condition = StringField('Pass Condition',validators=[DataRequired()])
     submit = SubmitField('Save')
 
