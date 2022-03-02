@@ -11,7 +11,7 @@
     </fieldset>
     <div class="form-group m-3">
         {{ form.submit(class="btn btn-outline-info") }}
-        <a class="btn btn-outline-danger" href="{{url_for('procedures',project_id=project_id)}}">Cancel</a>
+        <a href="{{ url_for('procedures', project_id=project_id) }}" class="btn btn-danger" data-dismiss="modal">Cancel</a>
     </div>
 </form>
 {% endblock content %}

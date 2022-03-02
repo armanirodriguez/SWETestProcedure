@@ -1,0 +1,17 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+{% block content %}
+<form method="POST" action="{{ url_for('edit_step', step_id=edit_step.id) }}">
+    {{ editForm.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-bottom m-3">Update a step</legend>
+        {{ render_field(editForm.step_name, class="form-control form-control-lg", value=edit_step.name) }}
+        {{ render_field(editForm.instructions, class="form-control form-control-lg", value=edit_step.instructions) }}
+        {{ render_field(editForm.pass_condition, class="form-control form-control-lg", value=edit_step.pass_condition) }}
+    </fieldset>
+    <div class="form-group m-3">
+            {{ editForm.submit(class="btn btn-outline-info") }}
+            <a class="btn btn-outline-danger" href="{{url_for('procedure', procedure_id=edit_step.procedure.id)}}">Cancel</a>
+    </div>
+</form>
+{% endblock content %}
