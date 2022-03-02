@@ -1,18 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<div class="row">
+    <a class="btn btn-primary offset-md-1" href="{{url_for('projects')}}">Back To Projects</a>
+</div><br>
+
+
 <div id="container-fluid">
     <div class="row">
       <div class="col-2">
         <h3 style="white-space: nowrap;">Test Procedures</h3>
       </div>
       <div class="col-10">
-        <span class="float-right"><a href="{{ url_for('new_procedure') }}"><button type="button" class="btn btn-success float-end text-end" data-toggle="modal" data-target="">New Procedure</button></a></span>
+        <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end" data-toggle="modal" data-target="">New Procedure</button></a></span>
       </div>
     </div>
 </div>
-
-<!-- Button trigger modal -->
 
 
 
@@ -25,13 +28,15 @@
             <th scope="col">Name</th>
             <th scope="col">Date Created</th>
             <th scope="col">Approval</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
     {% for procedure in procedures %}
         <tr>
             <th scope="row">{{ procedure.id }}</th>
-            <td><a href="{{ url_for('procedure', id=procedure.id) }}">{{ procedure.name }}</a></td>
+            <td><a href="{{ url_for('procedure', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
             <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
             {% if procedure.approval %}
                 <td> <a href="#" class="badge badge-success">Approved</a> </td>
@@ -39,11 +44,11 @@
                 <td> <a href="#" class="badge badge-danger">Not Approved</a> </td>
             {% endif %}
             <td>
-                <a href="{{ url_for('edit', id=procedure.id) }}"><img src="../static/img/pencil-square.svg" alt="Edit"></a>
+                <a href="{{ url_for('edit_procedure', procedure_id=procedure.id, project_id=project_id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
             </td>
             <td>
-                <form method="post" action="{{ url_for('delete_procedure', id=procedure.id) }}">
-                    <input type="image" name="submit" src="../static/img/trash3-fill.svg"></button>
+                <form method="post" action="{{ url_for('delete_procedure', procedure_id=procedure.id) }}">
+                    <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
                 </form>
             </td>
         </tr>

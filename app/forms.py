@@ -8,14 +8,16 @@ class ProcedureForm(FlaskForm):
     approval = BooleanField('Approval')
     notes = StringField('Notes', widget=TextArea())
     submit = SubmitField('Save')
-    cancel = SubmitField('Cancel')
 
 class StepForm(FlaskForm):
     step_name = StringField('Step Name', validators=[DataRequired()])
     instructions = StringField('Test Instructions', widget=TextArea(),validators=[DataRequired()])
     pass_condition = StringField('Pass Condition',validators=[DataRequired()])
     submit = SubmitField('Save')
-    cancel = SubmitField('Cancel')
+
+class ProjectForm(FlaskForm):
+    project_name = StringField('Project Name', validators=[DataRequired()])
+    submit = SubmitField('Create Project')
 
 class TestRunFormFactory():
     def __init__(self,test_steps):
@@ -27,7 +29,6 @@ class TestRunFormFactory():
 
         for step in self.test_steps:
             setattr(TestRunForm, str(step.id), RadioField(f"Select the observed result.", choices=[("pass","pass"),("fail","fail")], description="teststep"))
-        setattr(TestRunForm,"submit",SubmitField('Save'))
-        setattr(TestRunForm,"cancel",SubmitField('Cancel'))
+        setattr(TestRunForm,"submit",SubmitField('Save Results'))
         form = TestRunForm()
         return TestRunForm()

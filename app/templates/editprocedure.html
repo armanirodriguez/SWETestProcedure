@@ -1,7 +1,7 @@
 {% from "_formhelpers.html" import render_field %}
 {% extends "layout.html" %}
 {% block content %}
-<form method="POST" action="{{ url_for('edit', id=edit_procedure.id) }}">
+<form method="POST" action="{{ url_for('edit_procedure', procedure_id=edit_procedure.id) }}">
     {{ editForm.hidden_tag() }}
     <fieldset class="form-group">
         <legend class="border-bottom m-3">Update a procedure</legend>
@@ -11,7 +11,7 @@
     </fieldset>
     <div class="form-group m-3">
             {{ editForm.submit(class="btn btn-outline-info") }}
-            {{ editForm.cancel(class="btn btn-outline-danger") }}
+            <a class="btn btn-outline-danger" href="{{url_for('procedures',project_id=edit_procedure.project_id)}}">Cancel</a>
     </div>
 </form>
 {% endblock content %}

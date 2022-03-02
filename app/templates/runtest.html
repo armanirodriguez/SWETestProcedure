@@ -7,7 +7,7 @@
     }
  </style>
 
-<form method="POST" action="{{ url_for('run_test_procedure', id=id) }}">
+<form method="POST" action="{{ url_for('run_test_procedure', procedure_id=procedure_id) }}">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
         <legend class="border-bottom m-3">Running Test Procedure: {{ procedure_name }}</legend>
@@ -28,7 +28,7 @@
     </fieldset>
     <div class="input-group mb-3">
         {{ form.submit(class="btn btn-outline-info") }}
-        {{ form.cancel(class="btn btn-outline-danger") }}
+        <a class="btn btn-outline-danger" href="{{url_for('procedure',procedure_id=procedure_id)}}">Cancel</a>
     </div>
 </form>
 
