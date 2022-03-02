@@ -14,28 +14,29 @@
 </div>
 {% else %}
 <div class="row">
-<button type="button" class="btn btn-primary offset-md-1" data-toggle="modal" data-target="#exampleModal">Create a New Project</button>
+    <button type="button" class="btn btn-primary offset-md-1" data-toggle="modal" data-target="#exampleModal">Create a New Project</button>
 </div><br>
 
 <div class="container">
     <div class="row row-cols-3">
     {% for project in projects %}
         <div class="row">
-        <div class="card bg-secondary text-white" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">{{ project.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-grey">Created {{ project.date_created.strftime('%B %d, %Y') }}</h6>
-                <p class="card-text">{{ project.procedures | length }} Test Procedures</p>
-                <p class="card-text">{{ project.procedures | map (attribute='steps') | map('length') | sum }} Test Steps</p>
-                <a href="{{ url_for('procedures', project_id=project.id) }}" class=" btn btn-primary">Open Project</a>
+            <div class="card bg-secondary text-white" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-grey">Created {{ project.date_created.strftime('%B %d, %Y') }}</h6>
+                    <p class="card-text">{{ project.procedures | length }} Test Procedures</p>
+                    <p class="card-text">{{ project.procedures | map (attribute='steps') | map('length') | sum }} Test Steps</p>
+                    <a href="{{ url_for('procedures', project_id=project.id) }}" class=" btn btn-primary">Open Project</a>
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
     </div>
 </div>
 {% endif %}
-  
+
+<!-- Pop Up Modal For Project Creation -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content bg-secondary text-white">
