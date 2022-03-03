@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, RadioField
 from wtforms.validators import DataRequired
-from wtforms.widgets import TextArea
 
 
 class ProcedureForm(FlaskForm):
