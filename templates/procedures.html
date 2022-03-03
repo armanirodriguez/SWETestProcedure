@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="text-left m-3">Test Procedures <a href="{{ url_for('new_procedure') }}"><button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="" >New Procedure</button></a></h2>
+
+<table class="table table-hover table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Version</th>
+            <th scope="col">Approval</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for entry in dataTable %}
+        <tr>
+            <th scope="row">{{ entry.pk_prodID }}</th>
+            <td><a href="{{ url_for('procedure_steps', id=entry.pk_prodID) }}">{{ entry.prodName }}</a></td>
+            <td>{{ entry.version }}</td>
+            {% if entry.approval %}
+                <td> <button style="padding: 1px 1px;pointer-events: none;" type="button" class="btn btn-success">Approved</button> </td>
+            {% else %}
+                <td> <button style="padding: 1px 1px;pointer-events: none;" type="button" class="btn btn-danger">Not Approved</button> </td>
+            {% endif %}
+            <td><a href="{{ url_for('edit', id=entry.pk_prodID)}}"><button style="padding: 1px 1px;" type="button" class="btn btn-info">Edit Procedure</button></a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

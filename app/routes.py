@@ -86,6 +86,20 @@ def delete_step(step_id):
     flash("Step successfully deleted!",'success')
     return redirect(url_for('procedure',procedure_id=step.procedure_id))
 
+@app.route("/editstep/<step_id>", methods=['GET', 'POST'])
+def edit_step(step_id):
+    editForm = StepForm()
+    edit_step = TestStep.query.get_or_404(step_id)
+    if editForm.validate_on_submit():
+        edit_step.name = editForm.step_name.data
+        edit_step.instructions = editForm.instructions.data
+        edit_step.pass_condition = editForm.pass_condition.data
+
+        db.session.commit()
+        flash('Step updated successfully!', 'dark')
+        return redirect(url_for('procedure', procedure_id = edit_step.procedure_id))
+    return render_template("editstep.html", title="Edit Step", editForm=editForm, edit_step=edit_step)
+
 @app.route("/procedure/<int:procedure_id>/newstep", methods=['GET','POST'])
 def new_step(procedure_id):
     form = StepForm()
