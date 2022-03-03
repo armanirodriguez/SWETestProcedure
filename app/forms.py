@@ -23,25 +23,20 @@ class ProjectForm(FlaskForm):
     editSubmit = SubmitField("Save")
 
 
-class TestRunFormFactory:
-    def __init__(self, test_steps):
-        self.test_steps = test_steps
+def get_test_run_form(steps):
+    # dynamically create test run form
+    class TestRunForm(FlaskForm):
+        pass
 
-    def get_test_run_form(self):
-        # dynamically create test run form
-        class TestRunForm(FlaskForm):
-            pass
-
-        for step in self.test_steps:
-            setattr(
-                TestRunForm,
-                str(step.id),
-                RadioField(
-                    f"Select the observed result.",
-                    choices=[("pass", "pass"), ("fail", "fail")],
-                    description="teststep",
-                ),
-            )
-        setattr(TestRunForm, "submit", SubmitField("Save Results"))
-        form = TestRunForm()
-        return TestRunForm()
+    for step in steps:
+        setattr(
+            TestRunForm,
+            str(step.id),
+            RadioField(
+                "Select the observed result.",
+                choices=[("pass", "pass"), ("fail", "fail")],
+                description="teststep",
+            ),
+        )
+    setattr(TestRunForm, "submit", SubmitField("Save Results"))
+    return TestRunForm()

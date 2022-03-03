@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 
-from app.forms import *
-from app.models import *
+from app.forms import ProcedureForm, StepForm, ProjectForm, get_test_run_form
+from app.models import TestProcedure, TestStep, Project
 from app import db
 from app import app
 
@@ -118,7 +118,6 @@ def delete_procedure(procedure_id):
 @app.route("/procedure/<int:procedure_id>")
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
-    steps = current_procedure.steps
     return render_template("teststeps.html", procedure=current_procedure)
 
 
@@ -177,7 +176,7 @@ def run_test_procedure(procedure_id):
     if len(steps) == 0:
         flash("There are currently no test steps to run", "warning")
         return redirect(url_for("procedure", procedure_id=procedure_id))
-    form = TestRunFormFactory(steps).get_test_run_form()
+    form = get_test_run_form(steps)
 
     if form.is_submitted():
         for field_name, value in form.data.items():
