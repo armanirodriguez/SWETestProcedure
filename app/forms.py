@@ -6,7 +6,7 @@ from wtforms.widgets import TextArea
 class ProcedureForm(FlaskForm):
     procedure_name = StringField('Procedure Name', validators=[DataRequired()])
     approval = BooleanField('Approval')
-    notes = StringField('Notes', widget=TextArea())
+    notes = StringField('Notes')
     submit = SubmitField('Save')
 
 class StepForm(FlaskForm):
@@ -18,6 +18,7 @@ class StepForm(FlaskForm):
 class ProjectForm(FlaskForm):
     project_name = StringField('Project Name', validators=[DataRequired()])
     submit = SubmitField('Create Project')
+    editSubmit = SubmitField('Save')
 
 class TestRunFormFactory():
     def __init__(self,test_steps):

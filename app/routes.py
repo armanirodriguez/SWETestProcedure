@@ -22,6 +22,23 @@ def projects():
     projects = Project.query.all()
     return render_template("projects.html",title="projects",form=form,projects=projects)
 
+@app.route("/deleteproject/<int:project_id>", methods=['POST'])
+def delete_project(project_id):
+    project = Project.query.get_or_404(project_id)
+    db.session.delete(project)
+    db.session.commit()
+    flash("Project successfully deleted!",'success')
+    return redirect(url_for('projects'))
+
+@app.route("/editproject/<int:project_id>", methods=['GET','POST'])
+def edit_project(project_id):
+    editForm = ProjectForm()
+    project = Project.query.get_or_404(project_id)
+    print(editForm.project_name.data)
+    if editForm.validate_on_submit():
+        project.name = editForm.project_name.data
+        db.session.commit()
+    return redirect(url_for('projects'))
 
 # ===== Test Procedures ===== #
 @app.route("/project/<int:project_id>/procedures")
@@ -125,6 +142,7 @@ def run_test_procedure(procedure_id):
         flash("There are currently no test steps to run", "warning")
         return redirect(url_for('procedure', procedure_id=procedure_id))
     form = TestRunFormFactory(steps).get_test_run_form()
+    
     if form.is_submitted():
         for field_name,value in form.data.items():
             try:
