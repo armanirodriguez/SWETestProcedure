@@ -20,7 +20,6 @@
 <table class="table table-hover table-striped table-dark">
     <thead>
         <tr>
-            <th scope="col">Number</th>
             <th scope="col">Name</th>
             <th scope="col">Date Created</th>
             <th scope="col">Approval</th>
@@ -31,7 +30,6 @@
     <tbody>
     {% for procedure in procedures %}
         <tr>
-            <th scope="row">{{ procedure.id }}</th>
             <td><a href="{{ url_for('procedure', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
             <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
             {% if procedure.approval %}
