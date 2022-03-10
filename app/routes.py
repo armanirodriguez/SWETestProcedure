@@ -118,7 +118,11 @@ def delete_procedure(procedure_id):
 @app.route("/procedure/<int:procedure_id>")
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
-    return render_template("teststeps.html", procedure=current_procedure)
+    return render_template(
+        "teststeps.html",
+        title=f"Procedure: {current_procedure.name}",
+        procedure=current_procedure,
+    )
 
 
 @app.route("/deletestep<int:step_id>", methods=["POST"])

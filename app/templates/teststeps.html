@@ -26,7 +26,6 @@
 <table class="table table-hover table-striped table-dark">
     <thead>
         <tr>
-            <th scope="col">Number</th>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Edit</th>
@@ -36,7 +35,6 @@
     <tbody>
     {% for step in procedure.steps %}
         <tr>
-            <th scope="row">{{ step.id }}</th>
             <td>{{ step.name }}</td>
             {% if step.status < 0 %}
                 <td><img src="/static/img/circle-fill.svg" alt="Failed"></a></td>
