@@ -19,7 +19,7 @@ class TestStep(db.Model):
     name = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     pass_condition = db.Column(db.Text, nullable=False)
-    status = db.Column(db.Integer, nullable=False, default=0)
+    is_setup_step = db.Columb(db.Boolean, nullable=False)
     procedure_id = db.Column(db.Integer, db.ForeignKey("TestProcedure.id"))
 
 
@@ -29,3 +29,16 @@ class Project(db.Model):
     name = db.Column(db.Text, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     procedures = db.relationship("TestProcedure", backref="project", lazy=True)
+    versions = db.relationship("Version", backref="project", lazy=True)
+
+
+class Version(db.Model):
+    __tablename__ = "Version"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Text, nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey("Project.id"))
+
+
+class TestRun(db.Model):
+    __tablename__ = "TestRun"
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
