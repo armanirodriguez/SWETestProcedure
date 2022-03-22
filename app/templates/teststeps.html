@@ -3,23 +3,67 @@
 
 <div class="row">
     <a class="btn btn-primary offset-md-1" href="{{url_for('procedures',project_id=procedure.project_id)}}">Back To Procedures</a>
+    <div class="col-6">
+        <a class="float-right" href="{{ url_for('run_test_procedure', procedure_id=procedure.id) }}">
+            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Run Test</button>
+        </a>
+    </div>
+    <div class="col">
+        <a class="float-left" href="{{ url_for('new_step', procedure_id=procedure.id) }}">
+            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Add Test Step</button>
+        </a>
+    </div>
 </div><br>
+
+
+{% if setup_steps|length > 0 %}
+    <div id="container">
+        <div class="row">
+            <div class="col-sm">
+                <h3 style="white-space: nowrap;">Setup Steps</h3>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for step in setup_steps %}
+            <tr>
+                <td>{{ step[0].name }}</td>
+                {% if step[1] < 0 %}
+                    <td><img src="/static/img/circle-fill.svg" alt="Failed"></a></td>
+                {% elif step[1] > 0 %}
+                <td><img src="/static/img/check2-all.svg" alt="Passed"></a></td>
+                {% else %}
+                <td><img src="/static/img/clock-fill.svg" alt="Pending"></a></td>
+                {% endif %}
+                    <td>
+                        <a href="{{ url_for('edit_step', step_id=step[0].id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
+                    </td>
+                <td>
+                <form method="post" action="{{ url_for('delete_step', step_id=step[0].id) }}">
+                    <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
+                </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
 
 <div id="container">
     <div class="row">
         <div class="col-sm">
             <h3 style="white-space: nowrap;">Test Steps For Procedure: {{ procedure.name }}</h3>
         </div>
-        <div class="col-6">
-            <a class="float-right" href="{{ url_for('run_test_procedure', procedure_id=procedure.id) }}">
-                <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Run Test</button>
-            </a>
-        </div>
-        <div class="col">
-            <a class="float-left" href="{{ url_for('new_step', procedure_id=procedure.id) }}">
-                <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Add Test Step</button>
-            </a>
-        </div>
+
     </div>
 </div>
 
@@ -33,21 +77,21 @@
         </tr>
     </thead>
     <tbody>
-    {% for step in procedure.steps %}
+    {% for step in test_steps %}
         <tr>
-            <td>{{ step.name }}</td>
-            {% if step.status < 0 %}
+            <td>{{ step[0].name }}</td>
+            {% if step[1] < 0 %}
                 <td><img src="/static/img/circle-fill.svg" alt="Failed"></a></td>
-            {% elif step.status > 0 %}
+            {% elif step[1] > 0 %}
             <td><img src="/static/img/check2-all.svg" alt="Passed"></a></td>
             {% else %}
             <td><img src="/static/img/clock-fill.svg" alt="Pending"></a></td>
             {% endif %}
                 <td>
-                    <a href="{{ url_for('edit_step', step_id=step.id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
+                    <a href="{{ url_for('edit_step', step_id=step[0].id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
                 </td>
             <td>
-            <form method="post" action="{{ url_for('delete_step', step_id=step.id) }}">
+            <form method="post" action="{{ url_for('delete_step', step_id=step[0].id) }}">
                 <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
             </form>
             </td>

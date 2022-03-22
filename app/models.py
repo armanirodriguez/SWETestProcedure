@@ -19,7 +19,7 @@ class TestStep(db.Model):
     name = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     pass_condition = db.Column(db.Text, nullable=False)
-    is_setup_step = db.Column(db.Boolean, nullable=False)
+    is_setup_step = db.Column(db.Boolean, nullable=False, default=False)
     procedure_id = db.Column(db.Integer, db.ForeignKey("TestProcedure.id"))
     runs = db.relationship("TestRun", backref="step", lazy=True)
 
