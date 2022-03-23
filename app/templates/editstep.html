@@ -8,6 +8,7 @@
         {{ render_field(editForm.step_name, class="form-control form-control-lg", value=edit_step.name) }}
         {{ render_field(editForm.instructions, class="form-control form-control-lg", value=edit_step.instructions) }}
         {{ render_field(editForm.pass_condition, class="form-control form-control-lg", value=edit_step.pass_condition) }}
+        {{ render_field(editForm.is_setup_step, checked=edit_step.is_setup_step) }}
     </fieldset>
     <div class="form-group m-3">
             {{ editForm.submit(class="btn btn-outline-info") }}

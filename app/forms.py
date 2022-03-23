@@ -7,6 +7,7 @@ class ProcedureForm(FlaskForm):
     procedure_name = StringField("Procedure Name", validators=[DataRequired()])
     approval = BooleanField("Approval")
     notes = StringField("Notes")
+    approvalNotes = StringField("Approval Notes")
     submit = SubmitField("Save")
 
 
@@ -14,6 +15,9 @@ class StepForm(FlaskForm):
     step_name = StringField("Step Name", validators=[DataRequired()])
     instructions = StringField("Test Instructions", validators=[DataRequired()])
     pass_condition = StringField("Pass Condition", validators=[DataRequired()])
+    is_setup_step = BooleanField(
+        "Is this a setup step? (Will be applied to all procedures)"
+    )
     submit = SubmitField("Save")
 
 

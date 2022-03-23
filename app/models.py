@@ -10,6 +10,7 @@ class TestProcedure(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     approval = db.Column(db.Boolean, nullable=False)
     notes = db.Column(db.Text, nullable=True)
+    approvalNotes = db.Column(db.Text, nullable=True)
     steps = db.relationship("TestStep", backref="procedure", lazy=True)
 
 
@@ -19,7 +20,7 @@ class TestStep(db.Model):
     name = db.Column(db.Text, nullable=False)
     instructions = db.Column(db.Text, nullable=False)
     pass_condition = db.Column(db.Text, nullable=False)
-    is_setup_step = db.Column(db.Boolean, nullable=False)
+    is_setup_step = db.Column(db.Boolean, nullable=False, default=False)
     procedure_id = db.Column(db.Integer, db.ForeignKey("TestProcedure.id"))
     runs = db.relationship("TestRun", backref="step", lazy=True)
 

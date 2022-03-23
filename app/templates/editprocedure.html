@@ -7,7 +7,9 @@
         <legend class="border-bottom m-3">Update a procedure</legend>
         {{ render_field(editForm.procedure_name, class="form-control form-control-lg", value=edit_procedure.name) }}
         {{ render_field(editForm.notes, class="form-control form-control-lg", value=edit_procedure.notes)}}
-        {{ render_field(editForm.approval) }}
+        {{ render_field(editForm.approval, checked=edit_procedure.approval) }}
+        {{ render_field(editForm.approvalNotes, class="form-control form-control-lg", value=edit_procedure.approvalNotes)}}
+
     </fieldset>
     <div class="form-group m-3">
             {{ editForm.submit(class="btn btn-outline-info") }}
