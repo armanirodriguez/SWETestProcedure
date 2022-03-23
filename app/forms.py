@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired
 class ProcedureForm(FlaskForm):
     procedure_name = StringField("Procedure Name", validators=[DataRequired()])
     approval = BooleanField("Approval")
-    notes = StringField("Notes")
+    notes = StringField("Description")
     approvalNotes = StringField("Approval Notes")
     submit = SubmitField("Save")
 
@@ -23,6 +23,7 @@ class StepForm(FlaskForm):
 
 class ProjectForm(FlaskForm):
     project_name = StringField("Project Name", validators=[DataRequired()])
+    initial_version_name = StringField("Initial Version", validators=[DataRequired()])
     submit = SubmitField("Create Project")
     editSubmit = SubmitField("Save")
 

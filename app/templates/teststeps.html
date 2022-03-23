@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "_projectlayout.html" %}
+{% block project_content %}
 
 <div class="row">
     <a class="btn btn-primary offset-md-1" href="{{url_for('procedures',project_id=procedure.project_id)}}">Back To Procedures</a>
@@ -15,6 +15,10 @@
     </div>
 </div><br>
 
+<h3> {{procedure.name}} </h3>
+<p> {{procedure.notes}} </p>
+
+<br>
 
 {% if setup_steps|length > 0 %}
     <div id="container">
@@ -99,4 +103,4 @@
     {% endfor %}
     </tbody>
 </table>
-{% endblock content %}
+{% endblock project_content %}

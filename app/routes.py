@@ -1,9 +1,10 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request, session
 
-from app.forms import ProcedureForm, StepForm, ProjectForm, get_test_run_form
-from app.models import TestProcedure, TestStep, Project, TestRun
 from app import db
 from app import app
+from app.forms import ProcedureForm, StepForm, ProjectForm, get_test_run_form
+from app.models import TestProcedure, TestStep, Project, TestRun, Version
+from app.util import ensure_version, get_test_steps_and_results
 
 
 @app.route("/")
@@ -20,6 +21,13 @@ def projects():
         new_project = Project(name=form.project_name.data)
         db.session.add(new_project)
         db.session.commit()
+
+        init_version = Version(
+            name=form.initial_version_name.data, project_id=new_project.id
+        )
+        db.session.add(init_version)
+        db.session.commit()
+
         return redirect(url_for("projects"))
     projects = Project.query.all()
     return render_template(
@@ -47,15 +55,31 @@ def edit_project(project_id):
     return redirect(url_for("projects"))
 
 
+@app.route("/newversion/<int:project_id>", methods=["POST"])
+def new_version(project_id):
+    name = request.form.get("version_name")
+    if any(x.name == name for x in Version.query.filter_by(project_id=project_id)):
+        flash("Version already exists", "warning")
+    new_version = Version(project_id=project_id, name=name)
+    db.session.add(new_version)
+    db.session.commit()
+    flash("New version has been added.", "success")
+    return redirect(request.referrer)
+
+
 # ===== Test Procedures ===== #
 @app.route("/project/<int:project_id>/procedures")
 def procedures(project_id):
-    procedures = Project.query.get_or_404(project_id).procedures
+    ensure_version(project_id)
+    current_project = Project.query.get_or_404(project_id)
+    procedures = current_project.procedures
     return render_template(
         "procedures.html",
         title="Procedure",
         procedures=procedures,
         project_id=project_id,
+        current_project=current_project,
+        current_version_name=Version.query.get(session.get("version_id")).name,
     )
 
 
@@ -123,6 +147,7 @@ def delete_procedure(procedure_id):
 @app.route("/procedure/<int:procedure_id>")
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
+    current_project = Project.query.get_or_404(current_procedure.project_id)
 
     # All steps that are not setup steps
     procedure_steps = [
@@ -138,8 +163,8 @@ def procedure(procedure_id):
         ):
             setup_steps.append(step)
 
-    setup_steps = get_test_steps_and_results(setup_steps)
-    procedure_steps = get_test_steps_and_results(procedure_steps)
+    setup_steps = get_test_steps_and_results(setup_steps, session["version_id"])
+    procedure_steps = get_test_steps_and_results(procedure_steps, session["version_id"])
 
     return render_template(
         "teststeps.html",
@@ -147,20 +172,9 @@ def procedure(procedure_id):
         procedure=current_procedure,
         test_steps=procedure_steps,
         setup_steps=setup_steps,
+        current_project=current_project,
+        current_version_name=Version.query.get(session.get("version_id")).name,
     )
-
-
-# Helper function for procedure route.
-# @return A list of tuples mapping steps and results
-def get_test_steps_and_results(steps):
-    results = []
-    for step in steps:
-        if len(step.runs) == 0:
-            results.append(0)
-        else:
-            recent_run = max(step.runs, key=lambda x: x.timestamp)
-            results.append(1 if recent_run.passing else -1)
-    return list(zip(steps, results))
 
 
 @app.route("/deletestep<int:step_id>", methods=["POST"])
@@ -215,6 +229,7 @@ def new_step(procedure_id):
 @app.route("/procedure/<int:procedure_id>/run", methods=["POST", "GET"])
 def run_test_procedure(procedure_id):
     procedure = TestProcedure.query.get_or_404(procedure_id)
+    ensure_version(procedure.project_id)
     procedure_name = procedure.name
 
     # Build list of setup steps in this project
@@ -241,10 +256,14 @@ def run_test_procedure(procedure_id):
             except ValueError:
                 continue
             if value == "pass":
-                new_run = TestRun(step_id=step_id, passing=True)
+                new_run = TestRun(
+                    step_id=step_id, passing=True, version_id=session["version_id"]
+                )
                 db.session.add(new_run)
             elif value == "fail":
-                new_run = TestRun(step_id=step_id, passing=False)
+                new_run = TestRun(
+                    step_id=step_id, passing=False, version_id=session["version_id"]
+                )
                 db.session.add(new_run)
         db.session.commit()
         flash("Test run completed", "success")
@@ -257,6 +276,20 @@ def run_test_procedure(procedure_id):
         steps=steps,
         procedure_name=procedure_name,
     )
+
+
+@app.route("/editcurrentversion/<int:project_id>/<version_name>", methods=["GET"])
+def edit_current_version(project_id, version_name):
+    curr_project = Project.query.get(project_id)
+    if curr_project is None:
+        return redirect(request.referrer)
+    new_version = next(
+        (v for v in curr_project.versions if v.name == version_name), None
+    )
+    if new_version is None:
+        return redirect(request.referrer)
+    session["version_id"] = new_version.id
+    return redirect(request.referrer)
 
 
 @app.before_first_request

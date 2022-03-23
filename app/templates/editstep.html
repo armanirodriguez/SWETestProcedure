@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 <form method="POST" action="{{ url_for('edit_step', step_id=edit_step.id) }}">
     {{ editForm.hidden_tag() }}

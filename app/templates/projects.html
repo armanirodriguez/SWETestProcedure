@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 
 {% if projects | length == 0 %}
@@ -82,6 +82,7 @@
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
                     {{ render_field(form.project_name, class="form-control form-control-lg") }}
+                    {{ render_field(form.initial_version_name, class="form-control form-control-lg") }}
                 </fieldset>
                     {{ form.submit(class="btn btn-primary") }}
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
