@@ -68,7 +68,11 @@ def new_procedure(project_id):
         approvalNotes = form.approvalNotes.data
         notes = form.notes.data
         myData = TestProcedure(
-            name=procedure_name, approval=approval, approvalNotes=approvalNotes, notes=notes, project_id=project_id
+            name=procedure_name,
+            approval=approval,
+            approvalNotes=approvalNotes,
+            notes=notes,
+            project_id=project_id,
         )
         db.session.add(myData)
         db.session.commit()
@@ -91,7 +95,6 @@ def edit_procedure(procedure_id):
         edit_procedure.approval = editForm.approval.data
         edit_procedure.notes = editForm.notes.data
         edit_procedure.approvalNotes = editForm.approvalNotes.data
-
         db.session.commit()
         flash(f"Procedure {editForm.procedure_name.data} updated!", "dark")
         return redirect(url_for("procedures", project_id=edit_procedure.project_id))
@@ -121,10 +124,12 @@ def delete_procedure(procedure_id):
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
 
+    # All steps that are not setup steps
     procedure_steps = [
         step for step in current_procedure.steps if not step.is_setup_step
     ]
 
+    # Build list of setup steps in this project
     setup_steps = list()
     for step in TestStep.query.filter_by(is_setup_step=True):
         if (
@@ -212,6 +217,7 @@ def run_test_procedure(procedure_id):
     procedure = TestProcedure.query.get_or_404(procedure_id)
     procedure_name = procedure.name
 
+    # Build list of setup steps in this project
     setup_steps = list()
     for step in TestStep.query.filter_by(is_setup_step=True):
         if (
@@ -220,7 +226,9 @@ def run_test_procedure(procedure_id):
         ):
             setup_steps.append(step)
 
+    # Run setup steps and then procedure steps
     steps = setup_steps + procedure.steps
+
     if len(steps) == 0:
         flash("There are currently no test steps to run", "warning")
         return redirect(url_for("procedure", procedure_id=procedure_id))
