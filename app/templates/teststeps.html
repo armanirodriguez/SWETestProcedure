@@ -2,7 +2,7 @@
 {% block project_content %}
 
 <div class="row">
-    <a class="btn btn-primary offset-md-1" href="{{url_for('procedures',project_id=procedure.project_id)}}">Back To Procedures</a>
+    <a class="btn btn-primary offset-md-1" style="margin-left:3.4%;" href="{{url_for('procedures',project_id=procedure.project_id)}}">Back To Procedures</a>
     <div class="col-6">
         <a class="float-right" href="{{ url_for('run_test_procedure', procedure_id=procedure.id) }}">
             <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Run Test</button>
@@ -15,8 +15,8 @@
     </div>
 </div><br>
 
-<h3> {{procedure.name}} </h3>
-<p> {{procedure.notes}} </p>
+<h3 class="ml-5"> {{procedure.name}} </h3>
+<p class="ml-5"> {{procedure.notes}} </p>
 
 <br>
 
@@ -24,11 +24,11 @@
     <div id="container">
         <div class="row">
             <div class="col-sm">
-                <h3 style="white-space: nowrap;">Setup Steps</h3>
+                <h3 style="white-space: nowrap;" class="ml-5">Setup Steps</h3>
             </div>
         </div>
     </div>
-    <table class="table table-hover table-striped table-dark">
+    <table class="table table-hover table-striped table-dark" style="border-radius: 5px; margin: 0 auto; width: 95%;">
         <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -65,13 +65,13 @@
 <div id="container">
     <div class="row">
         <div class="col-sm">
-            <h3 style="white-space: nowrap;">Test Steps For Procedure: {{ procedure.name }}</h3>
+            <h3 style="white-space: nowrap;" class="ml-5 mt-3">Test Steps For Procedure: {{ procedure.name }}</h3>
         </div>
 
     </div>
 </div>
 
-<table class="table table-hover table-striped table-dark">
+<table class="table table-hover table-striped table-dark" style="border-radius: 5px; margin: 0 auto; width: 95%;">
     <thead>
         <tr>
             <th scope="col">Name</th>

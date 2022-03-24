@@ -1,85 +1,84 @@
 {% extends "_projectlayout.html" %}
 {% block project_content %}
+<div class="row">
+  <a class="btn btn-primary" style="margin-left:3.4%;" href="{{url_for('projects')}}">Back To Projects</a>
+</div><br>
 
 
 <div id="container-fluid">
-    <div class="row">
-      <div class="col-2">
-        <h3 style="white-space: nowrap;">Test Procedures</h3>
-      </div>
-      <div class="col-10">
-        <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end" data-toggle="modal" data-target="">New Procedure</button></a></span>
-      </div>
+  <div class="row">
+    <div class="col-2">
+      <h3 style="white-space: nowrap; margin-left: 18%;">Test Procedures</h3>
     </div>
+    <div class="col-10">
+      <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end mr-5" data-toggle="modal" data-target="">New Procedure</button></a></span>
+    </div>
+  </div>
 </div>
 
-<table class="table table-hover table-striped table-dark">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Date Created</th>
-            <th scope="col">Approval</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for procedure in procedures %}
-        <tr>
-            <td><a href="{{ url_for('procedure', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
-            <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
-            {% if procedure.approval %}
-                <td><button type="button" class="badge badge-success" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Approved</button></td>
-            {% else %}
-                <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Not Approved</button></td>
-            {% endif %}
-            <td>
-                <a href="{{ url_for('edit_procedure', procedure_id=procedure.id, project_id=project_id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
-            </td>
-            <td>
-                <form method="post" action="{{ url_for('delete_procedure', procedure_id=procedure.id) }}">
-                    <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
-                </form>
-            </td>
-        </tr>
+<input type="text" class="live-search-box form-control form-control" style="width:15%; margin: 2.5%; margin-top: 0%;" placeholder="Search" />
 
-        <!-- Approval Modal -->
-        <div class="modal fade" id="approvalModal{{procedure.id}}" tabindex="-1" role="dialog" aria-labelledby="approvalModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content bg-secondary text-white">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="approvalModalLabel">Approval Notes</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ url_for('projects') }}">
-                        <fieldset class="form-group">
-                            {{ procedure.approvalNotes }}
-                        </fieldset>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    </form>
-        </div>
-        <div class="modal fade" id="approvalModal{{procedure.id}}" tabindex="-1" role="dialog" aria-labelledby="approvalModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content bg-secondary text-white">
-        <div class="modal-header">
-          <h5 class="modal-title" id="approvalModalLabel">Approval Notes</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <form method="POST" action="{{ url_for('projects') }}">
-                <fieldset class="form-group">
-                    {{ procedure.approvalNotes }}
-                </fieldset>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </form>
-</div>
-    {% endfor %}
-    </tbody>
+<table class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
+  <thead>
+      <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Date Created</th>
+          <th scope="col">Approval</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+      </tr>
+  </thead>
+  <tbody>
+  {% for procedure in procedures %}
+      <tr id="prod-row">
+          <td id="prod-name"><a href="{{ url_for('procedure', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
+          <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
+          {% if procedure.approval %}
+              <td><button type="button" class="badge badge-success" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Approved</button></td>
+              {% include 'modalApprovalNotes.html' %}
+          {% else %}
+              <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Not Approved</button></td>
+              {% include 'modalApprovalNotes.html' %}
+          {% endif %}
+          <td>
+              <a href="{{ url_for('edit_procedure', procedure_id=procedure.id, project_id=project_id) }}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
+          </td>
+          <td>
+              <form method="post" action="{{ url_for('delete_procedure', procedure_id=procedure.id) }}">
+                  <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
+              </form>
+          </td>
+      </tr>
+  {% endfor %}
+  </tbody>
 </table>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+      $('.procedure-table tbody tr #prod-name').each(function(){
+          $(this).attr('data-search-term', $(this).text().toLowerCase());
+      });
+
+      $('.live-search-box').on('keyup', function(){
+          var searchTerm = $(this).val().toLowerCase();
+          if(searchTerm !== ""){
+              $('.procedure-table tbody #prod-row').each(function(){
+                  if ($(this).find("td").filter(searchTerm.length < 1 || '[data-search-term *= ' + searchTerm + ']').length > 0) {
+                      $(this).show();
+                  } else {
+                      console.log($(this));
+                      $(this).hide();
+                  }
+              });
+          }
+          else{
+              console.log("Search is empty");
+              $('.procedure-table tbody #prod-row').each(function(){
+                  $(this).show();
+              });
+          }
+      });
+});
+</script>
 {% endblock project_content %}
