@@ -242,7 +242,7 @@ def run_test_procedure(procedure_id):
             setup_steps.append(step)
 
     # Run setup steps and then procedure steps
-    steps = setup_steps + procedure.steps
+    steps = setup_steps + [x for x in procedure.steps if not x.is_setup_step]
 
     if len(steps) == 0:
         flash("There are currently no test steps to run", "warning")
