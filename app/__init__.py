@@ -1,3 +1,5 @@
+# Create a flask application, and load the database within the app folder. If no databae exists, create one. Config app and database keys#
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 

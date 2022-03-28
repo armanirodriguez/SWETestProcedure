@@ -1,3 +1,5 @@
+#Models the test procedure database, and creates tables for each aspect. Also establishes relationships between tables to allow for joins.
+
 from datetime import datetime
 from app import db
 

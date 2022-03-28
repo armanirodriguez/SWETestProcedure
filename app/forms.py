@@ -1,3 +1,5 @@
+#Integrates forms into Flask app, and creates a set form for each aspect of testing.#
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, RadioField
 from wtforms.validators import DataRequired

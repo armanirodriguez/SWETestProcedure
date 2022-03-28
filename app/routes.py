@@ -1,3 +1,5 @@
+# Maps the site URLs to a specific function that will handle the logic for that URL.#
+
 from flask import render_template, url_for, flash, redirect, request, session
 
 from app import db
@@ -14,6 +16,9 @@ def home():
 
 
 # ===== Projects ===== #
+
+# Form to store and create a new procedure. #
+
 @app.route("/projects", methods=["GET", "POST"])
 def projects():
     form = ProjectForm()
@@ -34,6 +39,7 @@ def projects():
         "projects.html", title="projects", form=form, projects=projects
     )
 
+# Form to delete a project. #
 
 @app.route("/deleteproject/<int:project_id>", methods=["POST"])
 def delete_project(project_id):
@@ -43,6 +49,7 @@ def delete_project(project_id):
     flash("Project successfully deleted!", "success")
     return redirect(url_for("projects"))
 
+# Form to edit a project. #
 
 @app.route("/editproject/<int:project_id>", methods=["GET", "POST"])
 def edit_project(project_id):
@@ -54,6 +61,8 @@ def edit_project(project_id):
         db.session.commit()
     return redirect(url_for("projects"))
 
+
+# Form to create a new version of a project. #
 
 @app.route("/newversion/<int:project_id>", methods=["POST"])
 def new_version(project_id):
@@ -68,6 +77,9 @@ def new_version(project_id):
 
 
 # ===== Test Procedures ===== #
+
+# Form to store procedures. #
+
 @app.route("/project/<int:project_id>/procedures")
 def procedures(project_id):
     ensure_version(project_id)
@@ -82,6 +94,7 @@ def procedures(project_id):
         current_version_name=Version.query.get(session.get("version_id")).name,
     )
 
+# Form to create a new procedure. #
 
 @app.route("/project/<int:project_id>/newprocedure", methods=["GET", "POST"])
 def new_procedure(project_id):
@@ -108,6 +121,7 @@ def new_procedure(project_id):
         "newprocedure.html", title="New Procedure", form=form, project_id=project_id
     )
 
+# Form to edit an existing procedure. #
 
 @app.route("/editprocedure/<procedure_id>", methods=["GET", "POST"])
 def edit_procedure(procedure_id):
@@ -129,6 +143,7 @@ def edit_procedure(procedure_id):
         edit_procedure=edit_procedure,
     )
 
+# Form to delete a procedure. #
 
 @app.route("/deleteprocedure/<int:procedure_id>", methods=["POST"])
 def delete_procedure(procedure_id):
@@ -144,6 +159,9 @@ def delete_procedure(procedure_id):
 
 
 # ===== Test Steps ===== #
+
+# Sets current procedure, and then create setup steps. #
+
 @app.route("/procedure/<int:procedure_id>")
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
@@ -176,6 +194,7 @@ def procedure(procedure_id):
         current_version_name=Version.query.get(session.get("version_id")).name,
     )
 
+# Form to delete a step. #
 
 @app.route("/deletestep<int:step_id>", methods=["POST"])
 def delete_step(step_id):
@@ -185,6 +204,7 @@ def delete_step(step_id):
     flash("Step successfully deleted!", "success")
     return redirect(url_for("procedure", procedure_id=step.procedure_id))
 
+# Form to edit an existing step. #
 
 @app.route("/editstep/<step_id>", methods=["GET", "POST"])
 def edit_step(step_id):
@@ -202,6 +222,7 @@ def edit_step(step_id):
         "editstep.html", title="Edit Step", editForm=editForm, edit_step=edit_step
     )
 
+# Form to create a new step. #
 
 @app.route("/procedure/<int:procedure_id>/newstep", methods=["GET", "POST"])
 def new_step(procedure_id):
@@ -225,6 +246,7 @@ def new_step(procedure_id):
         "newstep.html", title="New Step", form=form, procedure_id=procedure_id
     )
 
+# Form for running a test procedure. #
 
 @app.route("/procedure/<int:procedure_id>/run", methods=["POST", "GET"])
 def run_test_procedure(procedure_id):
@@ -277,6 +299,7 @@ def run_test_procedure(procedure_id):
         procedure_name=procedure_name,
     )
 
+# Form to edit the version of a project. #
 
 @app.route("/editcurrentversion/<int:project_id>/<version_name>", methods=["GET"])
 def edit_current_version(project_id, version_name):
@@ -291,6 +314,7 @@ def edit_current_version(project_id, version_name):
     session["version_id"] = new_version.id
     return redirect(request.referrer)
 
+# Creates tables for database. #
 
 @app.before_first_request
 def create_tables():
