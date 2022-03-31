@@ -1,5 +1,7 @@
 click==8.0.4
 Flask==2.0.3
+Flask-Bcrypt==0.7.1
+Flask-Login==0.6.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.0
 greenlet==1.1.2
