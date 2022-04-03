@@ -1,12 +1,8 @@
-# Maps the site URLs to a specific function that will handle the logic for that URL.#
-
-from locale import currency
 from flask import render_template, url_for, flash, redirect, request, session
-
-from app import db
-from app import app
-from app.forms import ProcedureForm, StepForm, ProjectForm, get_test_run_form
-from app.models import TestProcedure, TestStep, Project, TestRun, Version
+from flask_login import login_user, current_user, logout_user, login_required
+from app import app, db, bcrypt
+from app.forms import ProcedureForm, StepForm, ProjectForm, LoginForm, get_test_run_form
+from app.models import TestProcedure, TestStep, Project, TestRun, Version, User
 from app.util import ensure_procedure, ensure_version, get_test_steps_and_results
 
 
@@ -18,9 +14,9 @@ def home():
 
 # ===== Projects ===== #
 
-# Form to store and create a new procedure. #
-
+# Display all projects
 @app.route("/projects", methods=["GET", "POST"])
+@login_required
 def projects():
     form = ProjectForm()
     if form.validate_on_submit():
@@ -40,9 +36,10 @@ def projects():
         "projects.html", title="projects", form=form, projects=projects
     )
 
-# Form to delete a project. #
 
+# Endpoint for deleting projects
 @app.route("/deleteproject/<int:project_id>", methods=["POST"])
+@login_required
 def delete_project(project_id):
     project = Project.query.get_or_404(project_id)
     db.session.delete(project)
@@ -50,13 +47,13 @@ def delete_project(project_id):
     flash("Project successfully deleted!", "success")
     return redirect(url_for("projects"))
 
-# Form to edit a project. #
 
+# Render
 @app.route("/editproject/<int:project_id>", methods=["GET", "POST"])
+@login_required
 def edit_project(project_id):
     editForm = ProjectForm()
     project = Project.query.get_or_404(project_id)
-    print(editForm.project_name.data)
     if editForm.validate_on_submit():
         project.name = editForm.project_name.data
         db.session.commit()
@@ -65,7 +62,9 @@ def edit_project(project_id):
 
 # Form to create a new version of a project. #
 
+
 @app.route("/newversion/<int:project_id>", methods=["POST"])
+@login_required
 def new_version(project_id):
     name = request.form.get("version_name")
     if any(x.name == name for x in Version.query.filter_by(project_id=project_id)):
@@ -81,7 +80,9 @@ def new_version(project_id):
 
 # Form to store procedures. #
 
+
 @app.route("/project/<int:project_id>/procedures")
+@login_required
 def procedures(project_id):
     ensure_version(project_id)
     current_project = Project.query.get_or_404(project_id)
@@ -95,9 +96,12 @@ def procedures(project_id):
         current_version_name=Version.query.get(session.get("version_id")).name,
     )
 
+
 # Form to create a new procedure. #
 
+
 @app.route("/project/<int:project_id>/newprocedure", methods=["GET", "POST"])
+@login_required
 def new_procedure(project_id):
     form = ProcedureForm()
     if form.validate_on_submit():
@@ -122,9 +126,12 @@ def new_procedure(project_id):
         "newprocedure.html", title="New Procedure", form=form, project_id=project_id
     )
 
+
 # Form to edit an existing procedure. #
 
+
 @app.route("/editprocedure/<procedure_id>", methods=["GET", "POST"])
+@login_required
 def edit_procedure(procedure_id):
     editForm = ProcedureForm()
     edit_procedure = TestProcedure.query.get_or_404(procedure_id)
@@ -144,9 +151,12 @@ def edit_procedure(procedure_id):
         edit_procedure=edit_procedure,
     )
 
+
 # Form to delete a procedure. #
 
+
 @app.route("/deleteprocedure/<int:procedure_id>", methods=["POST"])
+@login_required
 def delete_procedure(procedure_id):
     procedure = TestProcedure.query.get_or_404(procedure_id)
     db.session.delete(procedure)
@@ -163,7 +173,9 @@ def delete_procedure(procedure_id):
 
 # Sets current procedure, and then create setup steps. #
 
+
 @app.route("/procedure/<int:procedure_id>")
+@login_required
 def procedure(procedure_id):
     current_procedure = TestProcedure.query.get_or_404(procedure_id)
     current_project = Project.query.get_or_404(current_procedure.project_id)
@@ -195,9 +207,12 @@ def procedure(procedure_id):
         current_version_name=Version.query.get(session.get("version_id")).name,
     )
 
+
 # Form to delete a step. #
 
+
 @app.route("/deletestep<int:step_id>", methods=["POST"])
+@login_required
 def delete_step(step_id):
     step = TestStep.query.get_or_404(step_id)
     db.session.delete(step)
@@ -205,9 +220,12 @@ def delete_step(step_id):
     flash("Step successfully deleted!", "success")
     return redirect(url_for("procedure", procedure_id=step.procedure_id))
 
+
 # Form to edit an existing step. #
 
+
 @app.route("/editstep/<step_id>", methods=["GET", "POST"])
+@login_required
 def edit_step(step_id):
     editForm = StepForm()
     edit_step = TestStep.query.get_or_404(step_id)
@@ -223,9 +241,12 @@ def edit_step(step_id):
         "editstep.html", title="Edit Step", editForm=editForm, edit_step=edit_step
     )
 
+
 # Form to create a new step. #
 
+
 @app.route("/procedure/<int:procedure_id>/newstep", methods=["GET", "POST"])
+@login_required
 def new_step(procedure_id):
     form = StepForm()
     if form.validate_on_submit():
@@ -247,9 +268,12 @@ def new_step(procedure_id):
         "newstep.html", title="New Step", form=form, procedure_id=procedure_id
     )
 
+
 # Form for running a test procedure. #
 
+
 @app.route("/procedure/<int:procedure_id>/run", methods=["POST", "GET"])
+@login_required
 def run_test_procedure(procedure_id):
     procedure = TestProcedure.query.get_or_404(procedure_id)
     ensure_version(procedure.project_id)
@@ -300,9 +324,12 @@ def run_test_procedure(procedure_id):
         procedure_name=procedure_name,
     )
 
+
 # Form to edit the version of a project. #
 
+
 @app.route("/editcurrentversion/<int:project_id>/<version_name>", methods=["GET"])
+@login_required
 def edit_current_version(project_id, version_name):
     curr_project = Project.query.get(project_id)
     if curr_project is None:
@@ -402,8 +429,41 @@ def dashboard(project_id):
     procedure_steps = procedure_steps, steps = steps
     )
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            flash(f"Welcome, {form.username.data}!", "success")
+            next_route = request.args.get("next")
+            return redirect(next_route) if next_route else redirect(url_for("home"))
+        else:
+            flash("Could not log in. Please check your credentials.", "danger")
+    return render_template("login.html", title="Login", form=form)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    flash("Logged out successfully!", "success")
+    return redirect(url_for("home"))
+
 # Creates tables for database. #
+
 
 @app.before_first_request
 def create_tables():
     db.create_all()
+    if len(User.query.all()) == 0:
+        default_user = User(
+            username="admin",
+            password=bcrypt.generate_password_hash("admin").decode("UTF-8"),
+            permissions=1,
+            force_password_change=True,
+        )
+        db.session.add(default_user)
+        db.session.commit()

@@ -1,7 +1,7 @@
-#Integrates forms into Flask app, and creates a set form for each aspect of testing.#
+# Integrates forms into Flask app, and creates a set form for each aspect of testing.#
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, RadioField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField
 from wtforms.validators import DataRequired
 
 
@@ -28,6 +28,13 @@ class ProjectForm(FlaskForm):
     initial_version_name = StringField("Initial Version", validators=[DataRequired()])
     submit = SubmitField("Create Project")
     editSubmit = SubmitField("Save")
+
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember = BooleanField("Remember Me")
+    submit = SubmitField("Login")
 
 
 def get_test_run_form(steps):

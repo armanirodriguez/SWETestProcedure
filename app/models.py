@@ -1,7 +1,6 @@
-#Models the test procedure database, and creates tables for each aspect. Also establishes relationships between tables to allow for joins.
-
 from datetime import datetime
-from app import db
+from app import db, login_manager
+from flask_login import UserMixin
 
 
 class TestProcedure(db.Model):
@@ -51,3 +50,16 @@ class TestRun(db.Model):
     step_id = db.Column(db.Integer, db.ForeignKey("TestStep.id"))
     passing = db.Column(db.Boolean, nullable=False)
     notes = db.Column(db.Text, nullable=True)
+
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(15), unique=True, nullable=False)
+    password = db.Column(db.String(64), nullable=False)
+    permissions = db.Column(db.Integer, nullable=False, default=0)
+    force_password_change = db.Column(db.Boolean, default=False)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
