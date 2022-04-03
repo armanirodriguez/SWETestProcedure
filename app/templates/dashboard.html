@@ -1,0 +1,149 @@
+{% extends "_projectlayout.html" %}
+{% block project_content %}
+
+<script src="/static/chartjs/chart.min.js"></script>
+<div class="row">
+    <div class="border-right border-secondary">
+        <div class="col-7">
+            <div class="row">
+                <div class="border-bottom border-secondary">
+                    <div class="mb-5" style="height: 600px; width: 600px;">
+                        <canvas id="myChart" width="600px" height="600px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5" style="height: 600px; width: 600px;">
+                <canvas id="myChart2" width="600px" height="600px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h1>Progress</h1>
+
+        {% if current_project.procedures|length==1 %}
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  aria-haspopup="true" aria-expanded="false">{{ current_procedure_name }}</button>
+          {% else %}
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_procedure_name }}</button>
+          {% endif %}
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for prod in current_project.procedures %}
+                {% if prod.name != current_procedure_name %}
+                  <a class="dropdown-item" href="{{ url_for('edit_current_procedure', procedure_name=prod.name, project_id=current_project.id) }}">{{ prod.name }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div style="margin: auto 0" class="mt-5" style="height: 500px; width: 400px;">
+            <canvas id="myChart3" width="400px" height="500px"></canvas>
+        </div>
+    </div>
+</div>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Failing', 'Passing', 'Pending'],
+            datasets: [{
+                label: 'Passing/Failing/Pending Steps',
+                data: ['{{passingValues[0]}}', '{{passingValues[1]}}', '{{passingValues[2]}}'], // R, G, O
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.3)', //Red
+                    'rgba(75, 192, 192, 0.3)', //Green
+                    'rgba(255, 159, 64, 0.3)' //Orange
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                gridLines: {
+                    drawBorder: false,
+                },
+            }]
+            },
+        }
+    });
+    const versionList = JSON.parse('{{ versions | tojson }}');
+    const percent_passing_list = JSON.parse('{{ percent_passing_list | tojson }}');
+    const ctx2 = document.getElementById('myChart2').getContext('2d');
+    const myChart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: versionList,
+            datasets: [{
+                label: '% of Test Steps Passing',
+                data: percent_passing_list,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.3)', //Green
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+        }
+    });
+
+    chart = new Chart(document.getElementById('myChart3').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ["{{current_procedure_name}}"],
+            datasets: [{
+                    label: 'Failing',
+                    data: ['{{progressValues[0]}}'],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)', //Red
+                    borderColor: 'rgba(255, 99, 132, 1)'
+                },
+                {
+                    label: 'Pending',
+                    data: ['{{progressValues[2]}}'],
+                    backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                    borderColor: 'rgba(255, 159, 64, 1)'
+                },
+                {
+                    label: 'Passing',
+                    data: ['{{progressValues[1]}}'],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)'
+                },
+            ]
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Example',
+                    font: {
+                        size: 14
+                    }
+                },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });
+    document.getElementById("prod-header").innerHTML = '{{current_project.name}}' + ' - Dashboard';
+</script>
+
+{% endblock project_content %}

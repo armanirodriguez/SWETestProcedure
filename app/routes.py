@@ -1,12 +1,13 @@
 # Maps the site URLs to a specific function that will handle the logic for that URL.#
 
+from locale import currency
 from flask import render_template, url_for, flash, redirect, request, session
 
 from app import db
 from app import app
 from app.forms import ProcedureForm, StepForm, ProjectForm, get_test_run_form
 from app.models import TestProcedure, TestStep, Project, TestRun, Version
-from app.util import ensure_version, get_test_steps_and_results
+from app.util import ensure_procedure, ensure_version, get_test_steps_and_results
 
 
 @app.route("/")
@@ -313,6 +314,93 @@ def edit_current_version(project_id, version_name):
         return redirect(request.referrer)
     session["version_id"] = new_version.id
     return redirect(request.referrer)
+
+@app.route("/editcurrentprocedure/<int:project_id>/<procedure_name>", methods=["GET"])
+def edit_current_procedure(project_id, procedure_name):
+    curr_project = Project.query.get(project_id)
+    if curr_project is None:
+        return redirect(request.referrer)
+    new_procedure = next(
+        (p for p in curr_project.procedures if p.name == procedure_name), None
+    )
+    if new_procedure is None:
+        return redirect(request.referrer)
+    session["procedure_id"] = new_procedure.id
+    return redirect(request.referrer)
+
+
+# Dashboard
+@app.route("/dashboard/<int:project_id>", methods=["GET", "POST"])
+def dashboard(project_id):
+    current_project = Project.query.get_or_404(project_id)
+    ensure_version(project_id)
+    if(len(current_project.procedures) == 0):
+        return redirect(request.referrer)
+    ensure_procedure(project_id)
+    
+    procedure_steps = [
+        step for x in current_project.procedures for step in x.steps if not step.is_setup_step
+    ]
+
+    # Build list of setup steps in this project
+    setup_steps = list()
+    setup_steps_clean = list() # Pre-Mapping
+    procedure_steps_clean = procedure_steps # Pre-Mapping
+    for step in TestStep.query.filter_by(is_setup_step=True):
+        if (
+            TestProcedure.query.get(step.procedure_id).project_id
+            == current_project.id
+        ):
+            setup_steps.append(step)
+            setup_steps_clean.append(step)
+
+    setup_steps = get_test_steps_and_results(setup_steps, session["version_id"])
+    procedure_steps = get_test_steps_and_results(procedure_steps, session["version_id"])
+    steps = setup_steps + procedure_steps
+    
+    # GRAPH 1 - PIE CHART DATA
+    passingValues = [];
+    for step,value in steps:
+        passingValues.append(value)
+    passingValues = [passingValues.count(-1), passingValues.count(1), passingValues.count(0)] # R, G, O
+
+    # X AXIS LABELS OF GRAPH 2
+    versions = [];
+    for version in current_project.versions:
+        versions.append(version.name)
+    
+    # GRAPH 2 - LINE GRAPH DATA
+    percent_passing_list = [0] * len(current_project.versions)
+    i = 0
+    for version in current_project.versions:
+        totalSteps = 0
+        curr_version_setup_steps = get_test_steps_and_results(setup_steps_clean, version.id)
+        curr_version_procedure_steps = get_test_steps_and_results(procedure_steps_clean, version.id)
+        curr_version_steps = curr_version_setup_steps + curr_version_procedure_steps
+        for step,value in curr_version_steps:
+            if value == 1:
+                percent_passing_list[i] += 1
+            totalSteps+=1
+        i+=1
+    if(totalSteps != 0):
+        percent_passing_list = [(x*100) / totalSteps for x in percent_passing_list]
+    
+    # GRAPH 3 - PROGRESS BAR DATA
+    progressValues = []
+    current_procedure=TestProcedure.query.get(session.get("procedure_id"))
+    current_steps = [step for step in current_procedure.steps if not step.is_setup_step]
+    current_steps = get_test_steps_and_results(current_steps, session["version_id"])
+    progress_steps = setup_steps + current_steps
+    for step,value in progress_steps:
+            progressValues.append(value)
+    progressValues = [progressValues.count(-1), progressValues.count(1), progressValues.count(0)] # R, G, O
+
+    return render_template("dashboard.html", current_project=current_project, project_id=project_id, 
+    current_version_name=Version.query.get(session.get("version_id")).name,
+    current_procedure_name=current_procedure.name, versions = versions, passingValues = passingValues, 
+    progressValues=progressValues, percent_passing_list = percent_passing_list, setup_steps = setup_steps, 
+    procedure_steps = procedure_steps, steps = steps
+    )
 
 # Creates tables for database. #
 

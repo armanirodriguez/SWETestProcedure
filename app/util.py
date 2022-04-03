@@ -1,5 +1,5 @@
 from flask import session
-from app.models import Version
+from app.models import TestProcedure, Version
 
 
 # Helper function for procedure route.
@@ -26,4 +26,14 @@ def ensure_version(project_id):
     ):
         curr_version = versions[0]
         session["version_id"] = curr_version.id
+        print("changed")
+
+def ensure_procedure(project_id):
+    prodNames = list(TestProcedure.query.filter_by(project_id=project_id))
+    assert len(prodNames) != 0
+    if "procedure_id" not in session or not any(
+        x.id == session["procedure_id"] for x in prodNames
+    ):
+        curr_prod_name = prodNames[0]
+        session["procedure_id"] = curr_prod_name.id
         print("changed")

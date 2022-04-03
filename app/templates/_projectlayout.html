@@ -7,8 +7,11 @@
 
 <div class="card bg-secondary">
   <div class="card-header">
-    <h1>{{ current_project.name }}</h1>
     <div class="row">
+      <h1 id="prod-header">{{ current_project.name }}</h1>
+    </div>
+    <div class="row">
+      <a href="{{ url_for('dashboard', project_id = current_project.id) }}"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="">Dashboard</button></a>
       <div class="col-1">
         <div class="dropdown">
           {% if current_project.versions|length==1 %}
@@ -18,7 +21,6 @@
           {% endif %}
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
               {% for version in current_project.versions %}
                 {% if version.name != current_version_name %}
                   <a class="dropdown-item" href="{{ url_for('edit_current_version', version_name=version.name, project_id=current_project.id) }}">{{ version.name }}</a>
@@ -31,9 +33,6 @@
         <a data-toggle="modal" data-target="#exampleModal"><img src="/static/img/plus-square.svg"></a>
       </div>
     </div>
-
-
-
   </div>
   <div class="card-body bg-dark">
     {% block project_content %}
