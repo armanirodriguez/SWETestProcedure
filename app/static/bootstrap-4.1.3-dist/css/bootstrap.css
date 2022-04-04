@@ -7507,6 +7507,43 @@ button.bg-dark:focus {
   margin: 1rem !important;
 }
 
+.m-3Mod {
+  text-align: center;
+  padding-top: 50px;
+}
+
+.m-3Mod3 {
+  text-align: center;
+  padding-top: 17px;
+  padding-bottom: 30px;
+  margin: 1rem;
+}
+
+.m-3Mod2 {
+  padding-top: 40px;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #4CAF50;
+  font-family: "Arial";
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 15px 32px;
+  transition-duration: .4s;
+}
+
+.m-3Mod2:Hover {
+  color: #4CAF50;
+  background-color: white;
+}
+
+.background11 {
+  background-image: url(background.jpg);
+  z-index: 10;
+}
+
 .mt-3,
 .my-3 {
   margin-top: 1rem !important;
