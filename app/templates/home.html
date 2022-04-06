@@ -1,11 +1,12 @@
 {% extends "_layout.html" %}
 {% block content %}
 
-<body class="background11">
+<body>
 
-    <h1 class="m-3Mod" style="font-weight: bold; font-size:80px"> Test Management Application </h1>
+    <h1 class="m-3Mod4" style="font-weight: bold"> Test Management Application </h1>
     <h3 class="m-3Mod3"> Welcome. Use button below to navigate to applcation.</h3> 
-    <button class="m-3Mod2" style="font-weight: bold"> Open Projects </button>
+    <a class="m-3Mod2" style="font-weight: bold; text-decoration: none" href="{{url_for('projects')}}"> Open Projects </a>
+    <img src="{{ url_for('static', filename='background3.jpeg') }}" style="margin-top: -1250px; z-index: 0;" class="responsive1">
 
 </body>
 

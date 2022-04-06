@@ -7507,9 +7507,33 @@ button.bg-dark:focus {
   margin: 1rem !important;
 }
 
+ /* Modifications by Harman Ransi */
+.m-3Mod4 {
+  text-align: center;
+  margin: 2rem !important;
+  font-size: 80px;
+  z-index: 100;
+  position: relative;
+}
+
+@media only screen and (max-width: 600px) {
+  .m-3Mod4 {
+    font-size: 50px;
+  }
+
+}
+
 .m-3Mod {
   text-align: center;
   padding-top: 50px;
+  z-index: 100;
+  position: relative;
+}
+
+.responsive1{
+  height:100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .m-3Mod3 {
@@ -7517,6 +7541,8 @@ button.bg-dark:focus {
   padding-top: 17px;
   padding-bottom: 30px;
   margin: 1rem;
+  z-index: 100;
+  position: relative;
 }
 
 .m-3Mod2 {
@@ -7532,6 +7558,7 @@ button.bg-dark:focus {
   border-radius: 7px;
   padding: 15px 32px;
   transition-duration: .4s;
+  z-index: 100;
 }
 
 .m-3Mod2:Hover {
@@ -7539,10 +7566,7 @@ button.bg-dark:focus {
   background-color: white;
 }
 
-.background11 {
-  background-image: url(background.jpg);
-  z-index: 10;
-}
+ /******************************/
 
 .mt-3,
 .my-3 {
