@@ -104,19 +104,19 @@
             datasets: [{
                     label: 'Failing',
                     data: ['{{progressValues[0]}}'],
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)', //Red
+                    backgroundColor: 'rgba(255, 99, 132, 0.3)', //Red
                     borderColor: 'rgba(255, 99, 132, 1)'
                 },
                 {
                     label: 'Pending',
                     data: ['{{progressValues[2]}}'],
-                    backgroundColor: 'rgba(255, 159, 64, 0.5)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.3)',
                     borderColor: 'rgba(255, 159, 64, 1)'
                 },
                 {
                     label: 'Passing',
                     data: ['{{progressValues[1]}}'],
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.3)',
                     borderColor: 'rgba(75, 192, 192, 1)'
                 },
             ]
@@ -144,6 +144,13 @@
         }
     });
     document.getElementById("prod-header").innerHTML = '{{current_project.name}}' + ' - Dashboard';
+    let btn = document.createElement("button");
+    btn.innerHTML = "Go Back";
+    document.getElementById('back-row').appendChild(btn);
+    btn.classList.add('btn', 'btn-primary', 'ml-3');
+    btn.addEventListener("click", function() {
+        window.history.back();
+    });
 </script>
 
 {% endblock project_content %}

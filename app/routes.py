@@ -69,10 +69,11 @@ def new_version(project_id):
     name = request.form.get("version_name")
     if any(x.name == name for x in Version.query.filter_by(project_id=project_id)):
         flash("Version already exists", "warning")
-    new_version = Version(project_id=project_id, name=name)
-    db.session.add(new_version)
-    db.session.commit()
-    flash("New version has been added.", "success")
+    else:
+        new_version = Version(project_id=project_id, name=name)
+        db.session.add(new_version)
+        db.session.commit()
+        flash("New version has been added.", "success`")
     return redirect(request.referrer)
 
 
@@ -371,16 +372,14 @@ def dashboard(project_id):
 
     # Build list of setup steps in this project
     setup_steps = list()
-    setup_steps_clean = list() # Pre-Mapping
-    procedure_steps_clean = procedure_steps # Pre-Mapping
     for step in TestStep.query.filter_by(is_setup_step=True):
         if (
             TestProcedure.query.get(step.procedure_id).project_id
             == current_project.id
         ):
             setup_steps.append(step)
-            setup_steps_clean.append(step)
-
+    setup_steps_clean = setup_steps # Pre-Mapping
+    procedure_steps_clean = procedure_steps # Pre-Mapping
     setup_steps = get_test_steps_and_results(setup_steps, session["version_id"])
     procedure_steps = get_test_steps_and_results(procedure_steps, session["version_id"])
     steps = setup_steps + procedure_steps
@@ -422,11 +421,17 @@ def dashboard(project_id):
             progressValues.append(value)
     progressValues = [progressValues.count(-1), progressValues.count(1), progressValues.count(0)] # R, G, O
 
-    return render_template("dashboard.html", current_project=current_project, project_id=project_id, 
-    current_version_name=Version.query.get(session.get("version_id")).name,
-    current_procedure_name=current_procedure.name, versions = versions, passingValues = passingValues, 
-    progressValues=progressValues, percent_passing_list = percent_passing_list, setup_steps = setup_steps, 
-    procedure_steps = procedure_steps, steps = steps
+    return render_template("dashboard.html", 
+        current_project=current_project, 
+        project_id=project_id, 
+        current_version_name=Version.query.get(session.get("version_id")).name,
+        current_procedure_name=current_procedure.name, 
+        versions = versions, passingValues = passingValues, 
+        progressValues=progressValues, 
+        percent_passing_list = percent_passing_list, 
+        setup_steps = setup_steps, 
+        procedure_steps = procedure_steps, 
+        steps = steps
     )
 
 @app.route("/login", methods=["GET", "POST"])
