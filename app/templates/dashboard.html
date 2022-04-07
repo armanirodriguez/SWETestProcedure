@@ -7,19 +7,20 @@
         <div class="col-7">
             <div class="row">
                 <div class="border-bottom border-secondary">
-                    <div class="mb-5" style="height: 600px; width: 600px;">
+                    <h1> Version Pass/Fail Ratio </h1>
+                    <div class="mb-5" style="height: 600px; width: 600px; padding-bottom: 20px;">
                         <canvas id="myChart" width="600px" height="600px"></canvas>
                     </div>
                 </div>
             </div>
+            <h1> Progress from Version to Version </h1>
             <div class="mt-5" style="height: 600px; width: 600px;">
                 <canvas id="myChart2" width="600px" height="600px"></canvas>
             </div>
         </div>
     </div>
     <div class="col">
-        <h1>Progress</h1>
-
+        <h1> Procedure Pass/Fail Ratio</h1>
         {% if current_project.procedures|length==1 %}
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  aria-haspopup="true" aria-expanded="false">{{ current_procedure_name }}</button>
           {% else %}
