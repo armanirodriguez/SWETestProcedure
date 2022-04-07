@@ -2,7 +2,6 @@ import pytest
 import os
 
 from app.models import Project
-from app.tests import review_and_bench as db
 
 # Establish test database and path.#
 
