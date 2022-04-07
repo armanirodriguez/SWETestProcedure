@@ -508,7 +508,7 @@ def create_tables():
         default_user = User(
             username="admin",
             password=bcrypt.generate_password_hash("admin").decode("UTF-8"),
-            permissions=User.PERM_ADMIN,
+            permissions=User.PERM_ADMIN | User.PERM_EDIT,
             force_password_change=True,
         )
         db.session.add(default_user)
