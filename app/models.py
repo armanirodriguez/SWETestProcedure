@@ -53,11 +53,19 @@ class TestRun(db.Model):
 
 
 class User(db.Model, UserMixin):
+    # Bitmask for permissions
+    PERM_EDIT = 1
+    PERM_ADMIN = 1 << 1
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
     permissions = db.Column(db.Integer, nullable=False, default=0)
     force_password_change = db.Column(db.Boolean, default=False)
+
+    # Jinja does't have bitwise operations so we define a helper
+    def is_admin(self):
+        return self.permissions & self.PERM_ADMIN
 
 
 @login_manager.user_loader

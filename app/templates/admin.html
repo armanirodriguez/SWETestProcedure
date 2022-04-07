@@ -1,0 +1,20 @@
+{% extends "_layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+
+<form method="POST" action="">
+    {{ user_form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Create A New User</legend>
+        {{ render_field(user_form.username, class="form-control form-control-lg") }}
+        {{ render_field(user_form.password, class="form-control form-control-lg") }}
+        {{ render_field(user_form.confirm_password, class="form-control form-control-lg") }}
+        {{ render_field(user_form.perm_admin, class="") }}
+        {{ render_field(user_form.perm_edit, class="") }}
+        {{ user_form.submit(class='btn btn-primary') }}
+    </fieldset>
+
+</form>
+
+
+{% endblock content %}

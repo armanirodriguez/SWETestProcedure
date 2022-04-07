@@ -2,7 +2,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo
 
 
 class ProcedureForm(FlaskForm):
@@ -35,6 +35,21 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])
     remember = BooleanField("Remember Me")
     submit = SubmitField("Login")
+
+
+class UserForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+            EqualTo("confirm_password", message="Passwords must match"),
+        ],
+    )
+    confirm_password = PasswordField("Password", validators=[DataRequired()])
+    perm_admin = BooleanField("Admin access")
+    perm_edit = BooleanField("Can Edit")
+    submit = SubmitField("Create User")
 
 
 def get_test_run_form(steps):

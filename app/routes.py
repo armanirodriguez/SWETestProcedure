@@ -1,7 +1,14 @@
 from flask import render_template, url_for, flash, redirect, request, session
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
-from app.forms import ProcedureForm, StepForm, ProjectForm, LoginForm, get_test_run_form
+from app.forms import (
+    ProcedureForm,
+    StepForm,
+    ProjectForm,
+    LoginForm,
+    UserForm,
+    get_test_run_form,
+)
 from app.models import TestProcedure, TestStep, Project, TestRun, Version, User
 from app.util import ensure_procedure, ensure_version, get_test_steps_and_results
 
@@ -20,6 +27,9 @@ def home():
 def projects():
     form = ProjectForm()
     if form.validate_on_submit():
+        if not current_user.permissions & User.PERM_EDIT:
+            flash("Permission denied", "danger")
+            return redirect(url_for("projects"))
         new_project = Project(name=form.project_name.data)
         db.session.add(new_project)
         db.session.commit()
@@ -48,7 +58,7 @@ def delete_project(project_id):
     return redirect(url_for("projects"))
 
 
-# Render
+# Endpoint for editing projects
 @app.route("/editproject/<int:project_id>", methods=["GET", "POST"])
 @login_required
 def edit_project(project_id):
@@ -60,9 +70,7 @@ def edit_project(project_id):
     return redirect(url_for("projects"))
 
 
-# Form to create a new version of a project. #
-
-
+# Endpoint for adding a project version
 @app.route("/newversion/<int:project_id>", methods=["POST"])
 @login_required
 def new_version(project_id):
@@ -79,9 +87,7 @@ def new_version(project_id):
 
 # ===== Test Procedures ===== #
 
-# Form to store procedures. #
-
-
+# Display all procedures within a project
 @app.route("/project/<int:project_id>/procedures")
 @login_required
 def procedures(project_id):
@@ -98,9 +104,7 @@ def procedures(project_id):
     )
 
 
-# Form to create a new procedure. #
-
-
+# Form to create a new procedure.
 @app.route("/project/<int:project_id>/newprocedure", methods=["GET", "POST"])
 @login_required
 def new_procedure(project_id):
@@ -128,9 +132,7 @@ def new_procedure(project_id):
     )
 
 
-# Form to edit an existing procedure. #
-
-
+# Form to edit an existing procedure
 @app.route("/editprocedure/<procedure_id>", methods=["GET", "POST"])
 @login_required
 def edit_procedure(procedure_id):
@@ -153,9 +155,7 @@ def edit_procedure(procedure_id):
     )
 
 
-# Form to delete a procedure. #
-
-
+# Endpoint to delete a procedure
 @app.route("/deleteprocedure/<int:procedure_id>", methods=["POST"])
 @login_required
 def delete_procedure(procedure_id):
@@ -172,9 +172,7 @@ def delete_procedure(procedure_id):
 
 # ===== Test Steps ===== #
 
-# Sets current procedure, and then create setup steps. #
-
-
+# Display all steps within procedure
 @app.route("/procedure/<int:procedure_id>")
 @login_required
 def procedure(procedure_id):
@@ -209,9 +207,7 @@ def procedure(procedure_id):
     )
 
 
-# Form to delete a step. #
-
-
+# Endpoint to delete a step.
 @app.route("/deletestep<int:step_id>", methods=["POST"])
 @login_required
 def delete_step(step_id):
@@ -222,9 +218,7 @@ def delete_step(step_id):
     return redirect(url_for("procedure", procedure_id=step.procedure_id))
 
 
-# Form to edit an existing step. #
-
-
+# Form to edit an existing step.
 @app.route("/editstep/<step_id>", methods=["GET", "POST"])
 @login_required
 def edit_step(step_id):
@@ -243,9 +237,7 @@ def edit_step(step_id):
     )
 
 
-# Form to create a new step. #
-
-
+# Form to create a new step
 @app.route("/procedure/<int:procedure_id>/newstep", methods=["GET", "POST"])
 @login_required
 def new_step(procedure_id):
@@ -270,9 +262,7 @@ def new_step(procedure_id):
     )
 
 
-# Form for running a test procedure. #
-
-
+# Generates a form to run all tests within a procedure
 @app.route("/procedure/<int:procedure_id>/run", methods=["POST", "GET"])
 @login_required
 def run_test_procedure(procedure_id):
@@ -326,9 +316,7 @@ def run_test_procedure(procedure_id):
     )
 
 
-# Form to edit the version of a project. #
-
-
+# Change the current displayed project version
 @app.route("/editcurrentversion/<int:project_id>/<version_name>", methods=["GET"])
 @login_required
 def edit_current_version(project_id, version_name):
@@ -343,6 +331,8 @@ def edit_current_version(project_id, version_name):
     session["version_id"] = new_version.id
     return redirect(request.referrer)
 
+
+# Change the procedure_id session variable (for dashboard)
 @app.route("/editcurrentprocedure/<int:project_id>/<procedure_name>", methods=["GET"])
 def edit_current_procedure(project_id, procedure_name):
     curr_project = Project.query.get(project_id)
@@ -362,78 +352,94 @@ def edit_current_procedure(project_id, procedure_name):
 def dashboard(project_id):
     current_project = Project.query.get_or_404(project_id)
     ensure_version(project_id)
-    if(len(current_project.procedures) == 0):
+    if len(current_project.procedures) == 0:
         return redirect(request.referrer)
     ensure_procedure(project_id)
-    
+
     procedure_steps = [
-        step for x in current_project.procedures for step in x.steps if not step.is_setup_step
+        step
+        for x in current_project.procedures
+        for step in x.steps
+        if not step.is_setup_step
     ]
 
     # Build list of setup steps in this project
     setup_steps = list()
     for step in TestStep.query.filter_by(is_setup_step=True):
-        if (
-            TestProcedure.query.get(step.procedure_id).project_id
-            == current_project.id
-        ):
+        if TestProcedure.query.get(step.procedure_id).project_id == current_project.id:
             setup_steps.append(step)
-    setup_steps_clean = setup_steps # Pre-Mapping
-    procedure_steps_clean = procedure_steps # Pre-Mapping
+    setup_steps_clean = setup_steps  # Pre-Mapping
+    procedure_steps_clean = procedure_steps  # Pre-Mapping
     setup_steps = get_test_steps_and_results(setup_steps, session["version_id"])
     procedure_steps = get_test_steps_and_results(procedure_steps, session["version_id"])
     steps = setup_steps + procedure_steps
-    
+
     # GRAPH 1 - PIE CHART DATA
-    passingValues = [];
-    for step,value in steps:
+    passingValues = []
+    for step, value in steps:
         passingValues.append(value)
-    passingValues = [passingValues.count(-1), passingValues.count(1), passingValues.count(0)] # R, G, O
+    passingValues = [
+        passingValues.count(-1),
+        passingValues.count(1),
+        passingValues.count(0),
+    ]  # R, G, O
 
     # X AXIS LABELS OF GRAPH 2
-    versions = [];
+    versions = []
     for version in current_project.versions:
         versions.append(version.name)
-    
+
     # GRAPH 2 - LINE GRAPH DATA
     percent_passing_list = [0] * len(current_project.versions)
     i = 0
     for version in current_project.versions:
         totalSteps = 0
-        curr_version_setup_steps = get_test_steps_and_results(setup_steps_clean, version.id)
-        curr_version_procedure_steps = get_test_steps_and_results(procedure_steps_clean, version.id)
+        curr_version_setup_steps = get_test_steps_and_results(
+            setup_steps_clean, version.id
+        )
+        curr_version_procedure_steps = get_test_steps_and_results(
+            procedure_steps_clean, version.id
+        )
         curr_version_steps = curr_version_setup_steps + curr_version_procedure_steps
-        for step,value in curr_version_steps:
+        for step, value in curr_version_steps:
             if value == 1:
                 percent_passing_list[i] += 1
-            totalSteps+=1
-        i+=1
-    if(totalSteps != 0):
-        percent_passing_list = [(x*100) / totalSteps for x in percent_passing_list]
-    
+            totalSteps += 1
+        i += 1
+    if totalSteps != 0:
+        percent_passing_list = [(x * 100) / totalSteps for x in percent_passing_list]
+
     # GRAPH 3 - PROGRESS BAR DATA
     progressValues = []
-    current_procedure=TestProcedure.query.get(session.get("procedure_id"))
+    current_procedure = TestProcedure.query.get(session.get("procedure_id"))
     current_steps = [step for step in current_procedure.steps if not step.is_setup_step]
     current_steps = get_test_steps_and_results(current_steps, session["version_id"])
     progress_steps = setup_steps + current_steps
-    for step,value in progress_steps:
-            progressValues.append(value)
-    progressValues = [progressValues.count(-1), progressValues.count(1), progressValues.count(0)] # R, G, O
+    for step, value in progress_steps:
+        progressValues.append(value)
+    progressValues = [
+        progressValues.count(-1),
+        progressValues.count(1),
+        progressValues.count(0),
+    ]  # R, G, O
 
-    return render_template("dashboard.html", 
-        current_project=current_project, 
-        project_id=project_id, 
+    return render_template(
+        "dashboard.html",
+        current_project=current_project,
+        project_id=project_id,
         current_version_name=Version.query.get(session.get("version_id")).name,
-        current_procedure_name=current_procedure.name, 
-        versions = versions, passingValues = passingValues, 
-        progressValues=progressValues, 
-        percent_passing_list = percent_passing_list, 
-        setup_steps = setup_steps, 
-        procedure_steps = procedure_steps, 
-        steps = steps
+        current_procedure_name=current_procedure.name,
+        versions=versions,
+        passingValues=passingValues,
+        progressValues=progressValues,
+        percent_passing_list=percent_passing_list,
+        setup_steps=setup_steps,
+        procedure_steps=procedure_steps,
+        steps=steps,
     )
 
+
+# === Users === #
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -452,14 +458,49 @@ def login():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     logout_user()
     flash("Logged out successfully!", "success")
     return redirect(url_for("home"))
 
+
+@app.route("/admin", methods=["GET", "POST"])
+@login_required
+def admin():
+    if not current_user.permissions & User.PERM_ADMIN:
+        flash("Permission denied", "danger")
+        return redirect(request.referrer)
+    user_form = UserForm()
+    if user_form.validate_on_submit():
+        username = user_form.username.data
+        password = user_form.password.data
+        perm_admin = user_form.perm_admin.data
+        perm_edit = user_form.perm_edit.data
+        permissions = 0
+        if perm_admin:
+            permissions |= User.PERM_ADMIN
+        if perm_edit:
+            permissions |= User.PERM_EDIT
+        if (
+            User.query.first() is not None
+            and User.query.first().username.lower() == username.lower()
+        ):
+            flash("Username taken. Please choose a different one.", "danger")
+        else:
+            new_user = User(
+                username=username,
+                password=bcrypt.generate_password_hash(password).decode("UTF-8"),
+                permissions=permissions,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            flash("User has been added", "success")
+
+    return render_template("admin.html", title="Admin Panel", user_form=user_form)
+
+
 # Creates tables for database. #
-
-
 @app.before_first_request
 def create_tables():
     db.create_all()
@@ -467,7 +508,7 @@ def create_tables():
         default_user = User(
             username="admin",
             password=bcrypt.generate_password_hash("admin").decode("UTF-8"),
-            permissions=1,
+            permissions=User.PERM_ADMIN,
             force_password_change=True,
         )
         db.session.add(default_user)
