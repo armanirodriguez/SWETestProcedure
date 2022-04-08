@@ -7507,67 +7507,6 @@ button.bg-dark:focus {
   margin: 1rem !important;
 }
 
- /* Modifications by Harman Ransi */
-.m-3Mod4 {
-  text-align: center;
-  margin: 2rem !important;
-  font-size: 80px;
-  z-index: 100;
-  position: relative;
-}
-
-@media only screen and (max-width: 600px) {
-  .m-3Mod4 {
-    font-size: 50px;
-  }
-
-}
-
-.m-3Mod {
-  text-align: center;
-  padding-top: 50px;
-  z-index: 100;
-  position: relative;
-}
-
-.responsive1{
-  width:100%;
-  height: 1000px;
-  margin-top: -500px;
-}
-
-.m-3Mod3 {
-  text-align: center;
-  padding-top: 17px;
-  padding-bottom: 30px;
-  margin: 1rem;
-  z-index: 100;
-  position: relative;
-}
-
-.m-3Mod2 {
-  padding-top: 40px;
-  position: absolute;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  background-color: #4CAF50;
-  font-family: "Arial";
-  color: white;
-  border: none;
-  border-radius: 7px;
-  padding: 15px 32px;
-  transition-duration: .4s;
-  z-index: 100;
-}
-
-.m-3Mod2:Hover {
-  color: #4CAF50;
-  background-color: white;
-}
-
- /******************************/
-
 .mt-3,
 .my-3 {
   margin-top: 1rem !important;
@@ -9089,3 +9028,162 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
+ /* Modifications by Harman Ransi */
+ .m-3Mod4 {
+  text-align: center;
+  margin: 2rem !important;
+  font-size: 80px;
+  z-index: 100;
+  position: relative;
+}
+
+@media only screen and (max-width: 600px) {
+  .m-3Mod4 {
+    font-size: 50px;
+  }
+
+}
+
+.m-3Mod {
+  text-align: center;
+  padding-top: 50px;
+  z-index: 100;
+  position: relative;
+}
+
+.responsive1{
+  width:100%;
+  height: 1000px;
+  margin-top: -500px;
+}
+
+.m-3Mod3 {
+  text-align: center;
+  padding-top: 17px;
+  padding-bottom: 30px;
+  margin: 1rem;
+  z-index: 100;
+  position: relative;
+}
+
+.m-3Mod2 {
+  padding-top: 40px;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #4CAF50;
+  font-family: "Arial";
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 15px 32px;
+  transition-duration: .4s;
+  z-index: 100;
+}
+
+.m-3Mod2:Hover {
+  color: #4CAF50;
+  background-color: white;
+}
+
+/*** For Approcal Button" ***/
+
+#apprLabel {
+  border-radius: 100px;
+  border-style: none;
+  padding: 10px;
+  background-color: #4CAF50;
+  opacity: .75;
+  transition-duration: .4s;
+}
+
+#apprLabel:hover{
+  transition-duration: .4s;
+  background-color: white;
+  color: #4CAF50;
+  opacity:1;
+}
+
+#notApprLabel {
+  border-radius: 100px;
+  border-style: none;
+  padding: 10px;
+  background-color: #fc664c;
+  opacity: .75;
+  transition-duration: .4s;
+}
+
+#notApprLabel:hover{
+  transition-duration: .4s;
+  background-color: white;
+  color: #fc664c;
+  opacity:1;
+}
+
+.prodNameLabel{
+  color: white;
+  font-weight: bold;
+  border: 1px solid white;
+  padding: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 100px;
+  font-size: 16px;
+  transition-duration: .4s;
+}
+
+.prodNameLabel:hover{
+  background-color: white;
+  transition-duration: .4s;
+  text-decoration: none;
+  color: rgb(60, 61, 66);
+}
+
+#searchBar{
+  border: 1px solid white;
+  background-color: rgba(0,0,0,0);
+  color: white;
+  opacity: .75;
+  border-width: thin;
+  border-radius: 100px;
+  left: 0;
+    -webkit-transition: 0.2s;
+  width: 75px;
+}
+
+#searchBar:hover {
+  opacity: 1;
+  border-width: medium; 
+  left: 0;
+    -webkit-transition: 0.2s;
+  font-weight: bold;
+}
+
+#searchBar:focus-within {
+  -webkit-transition: 0.2s;
+  border-width: medium;
+  font-weight: normal;
+  opacity: 1;
+}
+
+#newProdButton {
+  border-radius: 100px;
+  font-weight: bold;
+  opacity: .85;
+  transition-duration:.4s;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  
+}
+
+#newProdButton:hover {
+  background-color: white;
+  color: #4CAF50;
+  opacity: 1;
+  transition-duration: .4s;
+}
+
+ /******************************/

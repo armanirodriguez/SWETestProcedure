@@ -5,15 +5,15 @@
 <div id="container-fluid">
   <div class="row">
     <div class="col-2">
-      <h3 style="white-space: nowrap; margin-left: 18%;">Test Procedures</h3>
+      <h3 style="white-space: nowrap; margin-left: 18%; padding-bottom: 10px;">Test Procedures</h3>
     </div>
     <div class="col-10">
-      <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end mr-5" data-toggle="modal" data-target="">New Procedure</button></a></span>
+      <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end mr-5" data-toggle="modal" data-target="" id="newProdButton"> New Procedure </button></a></span>
     </div>
   </div>
 </div>
 
-<input type="text" class="live-search-box form-control form-control" style="width:15%; margin: 2.5%; margin-top: 0%;" placeholder="Search" />
+<input type="text" class="live-search-box form-control form-control" style="width:30%; margin: 2.5%; margin-top: 0%; text-align: center; -webkit-transition: .2s;" value="Search" id="searchBar" onfocus="this.value=''" onblur="this.value='Search'" />
 
 <table class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
   <thead>
@@ -28,13 +28,13 @@
   <tbody>
   {% for procedure in procedures %}
       <tr id="prod-row">
-          <td id="prod-name"><a href="{{ url_for('procedure', procedure_id=procedure.id) }}">{{ procedure.name }}</a></td>
+          <td id="prod-name"><a href="{{ url_for('procedure', procedure_id=procedure.id) }}" class="prodNameLabel">{{ procedure.name }}</a></td>
           <td>{{procedure.date_created.strftime('%B %d, %Y')}}</td>
           {% if procedure.approval %}
-              <td><button type="button" class="badge badge-success" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Approved</button></td>
+              <td><button type="button" class="badge badge-success" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="apprLabel">Approved</button></td>
               {% include 'modalApprovalNotes.html' %}
           {% else %}
-              <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}">Not Approved</button></td>
+              <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="notApprLabel">Not Approved</button></td>
               {% include 'modalApprovalNotes.html' %}
           {% endif %}
           <td>
