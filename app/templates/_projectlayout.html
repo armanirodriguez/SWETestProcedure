@@ -2,22 +2,22 @@
 {% block content %}
 
 <div class="row" id="back-row">
-  <a class="btn btn-primary offset-md-1" style="margin-left: 4.8%;" href="{{url_for('projects')}}">Back To Projects</a>
+  <a class="btn btn-primary offset-md-1" style="margin-left: 4.8%;" href="{{url_for('projects')}}" id="backButtons">Back To Projects</a>
 </div><br>
 
 <div class="card bg-secondary">
   <div class="card-header">
     <div class="row">
-      <h1 id="prod-header">{{ current_project.name }}</h1>
+      <h1 id="prod-header" style="padding-left: 35px; font-weight: bold">{{ current_project.name }}</h1>
     </div>
-    <div class="row">
-      <a href="{{ url_for('dashboard', project_id = current_project.id) }}"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="">Dashboard</button></a>
+    <div class="row" style="padding-left: 35px;">
+      <a href="{{ url_for('dashboard', project_id = current_project.id) }}"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="" style="font-weight: bold; background-color: rgb(37, 38, 38)">Dashboard</button></a>
       <div class="col-1">
         <div class="dropdown">
           {% if current_project.versions|length==1 %}
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  aria-haspopup="true" aria-expanded="false">Version {{ current_version_name }}</button>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  aria-haspopup="true" aria-expanded="false" style="background-color: rgb(37, 38, 38); font-weight: bold;">Version {{ current_version_name }}</button>
           {% else %}
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Version {{ current_version_name }}</button>
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: rgb(37, 38, 38); font-weight: bold;">Version {{ current_version_name }}</button>
           {% endif %}
 
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <div class="col-1"></div>
+      <div class="col-1" style="padding-left: 40px;">
         <a data-toggle="modal" data-target="#exampleModal"><img src="/static/img/plus-square.svg"></a>
       </div>
     </div>

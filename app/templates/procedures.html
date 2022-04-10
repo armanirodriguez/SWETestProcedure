@@ -5,7 +5,7 @@
 <div id="container-fluid">
   <div class="row">
     <div class="col-2">
-      <h3 style="white-space: nowrap; margin-left: 18%; padding-bottom: 10px;">Test Procedures</h3>
+      <h3 style="white-space: nowrap; margin-left: 18%; padding-bottom: 10px; font-weight:bold;">Test Procedures</h3>
     </div>
     <div class="col-10">
       <span class="float-right"><a href="{{ url_for('new_procedure', project_id = project_id) }}"><button type="button" class="btn btn-success float-end text-end mr-5" data-toggle="modal" data-target="" id="newProdButton"> New Procedure </button></a></span>
@@ -13,7 +13,7 @@
   </div>
 </div>
 
-<input type="text" class="live-search-box form-control form-control" style="width:30%; margin: 2.5%; margin-top: 0%; text-align: center; -webkit-transition: .2s;" value="Search" id="searchBar" onfocus="this.value=''" onblur="this.value='Search'" />
+<input type="text" class="live-search-box form-control form-control" style="width:30%; margin: 2.5%; margin-top: 0%; text-align: center; -webkit-transition: .2s;" placeholder="Search" id="searchBar" onfocus="placeholder = none" onblur="this.value=value" />
 
 <table class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
   <thead>
