@@ -9296,16 +9296,12 @@ a.text-dark:hover, a.text-dark:focus {
     width:100%;
   }
 
-  /**/ /**/
-  #backButtons {
-    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
-    font-weight: bold;
-  }
-
   #backButtons {
     transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
     font-weight: bold;
     border-style: none;
+    font-size: 15px;
+    margin: 10px auto auto 10px;
   }
   
   #backButtons:hover {
@@ -9313,6 +9309,27 @@ a.text-dark:hover, a.text-dark:focus {
     font-weight: bold;
     background-color: white;
     color: rgba(41, 118, 227, 1);
+  }
+   
+  .runTestButton{
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    border-style: none;
+  }
+
+  #runAndAddButton{
+    font-weight: bold;
+    -webkit-transition-duration: .4s;
+    border-style: none;
+  }
+
+  #runAndAddButton:hover{
+    font-weight: bold;
+    -webkit-transition-duration: .4s;
+    background-color: white;
+    color: #4CAF50;
   }
 
  /******************************/

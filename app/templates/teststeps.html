@@ -2,15 +2,15 @@
 {% block project_content %}
 
 <div class="row">
-    <a class="btn btn-primary offset-md-1" style="margin-left:3.4%;" href="{{url_for('procedures',project_id=procedure.project_id)}}">Back To Procedures</a>
-    <div class="col-6">
+    <a class="btn btn-primary offset-md-1" href="{{url_for('procedures',project_id=procedure.project_id)}}" id="backButtons" style="margin-left: 3.85%">Back To Procedures</a>
+    <div class="col" style="margin-top:10px;">
         <a class="float-right" href="{{ url_for('run_test_procedure', procedure_id=procedure.id) }}">
-            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Run Test</button>
+            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="" id="runAndAddButton">Run Test</button>
         </a>
     </div>
-    <div class="col">
+    <div class="col" style="margin-top:10px;">
         <a class="float-left" href="{{ url_for('new_step', procedure_id=procedure.id) }}">
-            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="">Add Test Step</button>
+            <button type="button" class="btn btn-success float-end" data-toggle="modal" data-target="" id="runAndAddButton">Add Test Step</button>
         </a>
     </div>
 </div><br>
