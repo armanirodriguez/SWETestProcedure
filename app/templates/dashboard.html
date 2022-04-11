@@ -146,9 +146,10 @@
     });
     document.getElementById("prod-header").innerHTML = '{{current_project.name}}' + ' - Dashboard';
     let btn = document.createElement("button");
-    btn.innerHTML = "Go Back";
+    btn.id = "button-change"
+    btn.innerHTML = "Back to Project Overview";
     document.getElementById('back-row').appendChild(btn);
-    btn.classList.add('btn', 'btn-primary', 'ml-3');
+    btn.classList.add('btn', 'btn-primary');
     btn.addEventListener("click", function() {
         window.history.back();
     });

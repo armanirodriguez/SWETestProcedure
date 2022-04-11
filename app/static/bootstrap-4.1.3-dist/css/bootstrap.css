@@ -9353,13 +9353,14 @@ a.text-dark:hover, a.text-dark:focus {
 
 /** Dashboard **/
 
-#back-row > button {
+  #back-row > button {
     transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
     font-weight: bold;
     border-style: none;
     font-size: 15px;
     margin-top: 10px;
-    margin-right: 30px;
+    margin-left: 185px;
+    position: absolute;
   }
   
   #back-row > button:hover {
@@ -9367,6 +9368,24 @@ a.text-dark:hover, a.text-dark:focus {
     font-weight: bold;
     background-color: white;
     color: rgba(41, 118, 227, 1);
+  }
+
+  .newVersButton{
+    border-style: none;
+    background-color:rgba(37, 38, 38, 1);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    -webkit-transition-duration: .4s;
+  }
+
+  .newVersButton:hover{
+    cursor: pointer;
+    -webkit-transition-duration: .4s;
+    background-color:rgba(255, 255, 255, 1);
+    color: rgb(37,38,38);
   }
 
 /******************************/

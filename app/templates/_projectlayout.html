@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="row" id="back-row">
-  <a class="btn btn-primary offset-md-1" style="margin-left: 60px;" href="{{url_for('projects')}}" id="backButtons"> Back To Projects</a>
+  <a class="btn btn-primary offset-md-1" style="margin-left: 60px;" href="{{url_for('projects')}}" id="backButtons"> All Projects </a>
 </div><br>
 
 <div class="card bg-secondary">
@@ -11,8 +11,8 @@
       <h1 id="prod-header" style="padding-left: 35px; font-weight: bold">{{ current_project.name }}</h1>
     </div>
     <div class="row" style="padding-left: 35px;">
-      <a href="{{ url_for('dashboard', project_id = current_project.id) }}"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="" style="font-weight: bold; background-color: rgb(37, 38, 38)">Dashboard</button></a>
-      <div class="col-1">
+      <a href="{{ url_for('dashboard', project_id = current_project.id) }}" style="z-index: 5"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="" style="font-weight: bold; background-color: rgb(37, 38, 38);">Dashboard</button></a>
+      <div class="col-1" style="z-index: 3">
         <div class="dropdown">
           {% if current_project.versions|length==1 %}
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"  aria-haspopup="true" aria-expanded="false" style="background-color: rgb(37, 38, 38); font-weight: bold;">Version {{ current_version_name }}</button>
@@ -29,8 +29,8 @@
           </div>
         </div>
       </div>
-      <div class="col-1" style="padding-left: 300px; position: absolute;">
-        <a data-toggle="modal" data-target="#exampleModal"><img src="/static/img/plus-square.svg"></a>
+      <div class="col-1" style="padding-left: 37.5px; padding-top: 2.5px; z-index: 0;">
+        <a data-toggle="modal" data-target="#exampleModal" > <button class="newVersButton"> +  </button></a>
       </div>
     </div>
   </div>
