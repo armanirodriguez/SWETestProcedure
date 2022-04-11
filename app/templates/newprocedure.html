@@ -4,7 +4,7 @@
 <form method="POST" action="{{ url_for('new_procedure', project_id=project_id) }}">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-        <legend class="border-bottom m-3">Create a new procedure</legend>
+        <legend class="border-bottom m-3" style="font-weight: bold; font-size: 35px;"> Create a New Procedure</legend>
         {{ render_field(form.procedure_name, class="form-control form-control-lg") }}
         {{ render_field(form.notes, class="form-control form-control-lg")}}
         {{ render_field(form.approval) }}

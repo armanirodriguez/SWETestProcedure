@@ -14,7 +14,7 @@
         {% for field in form %}
             {% if field.description == "teststep" %}
                 <div class="card text-white bg-secondary mb-3" style="max-width: 18rem; margin-left: 15px;">
-                    <div class="card-header" style="font-weight: bold; font-size: 21px;">{{ steps[ loop.index0 ].name }}</div>
+                    <div class="card-header" style="font-weight: bold; font-size: 25px;">{{ steps[ loop.index0 ].name }}</div>
                     <div class="card-body">
                         <h5 class="card-title">Instructions:</h5>
                         <p class="card-text" style="font-weight: bold;">{{ steps[ loop.index0 ].instructions }}</p>
