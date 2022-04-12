@@ -9100,6 +9100,46 @@ a.text-dark:hover, a.text-dark:focus {
   }
 /*****************************/
 
+/*** Run Test Page **/
+.form-group > ul {
+  font-weight: bold;
+  padding-left: 40px;
+}
+
+#savesave > span {
+  background-color: var(--cyan);
+  color: white;
+  font-weight: bold;
+}
+
+#savesave > input{
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+}
+
+#savesave > input:hover{
+  background-color: var(--cyan);
+}
+
+#savecancel {
+  color: white;
+  font-weight: bold;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+  transition-duration: .2s;
+}
+
+#savecancel > input:hover{
+  background-color: var(--red);
+  transition-duration: .2s;
+}
+
+
+
 /*** Procedure Page ***/
 
   #apprLabel {
@@ -9109,6 +9149,7 @@ a.text-dark:hover, a.text-dark:focus {
     background-color: #4CAF50;
     opacity: .75;
     transition-duration: .4s;
+    cursor: pointer;
   }
 
   #apprLabel:hover{
@@ -9125,6 +9166,7 @@ a.text-dark:hover, a.text-dark:focus {
     background-color: #fc664c;
     opacity: .75;
     transition-duration: .4s;
+    cursor: pointer;
   }
 
   #notApprLabel:hover{
@@ -9338,20 +9380,33 @@ a.text-dark:hover, a.text-dark:focus {
   border: 1px solid white;
     background-color: rgba(0,0,0,0);
     color: white;
-    opacity: .75;
+    opacity: .5;
     border-width: thin;
     border-radius: 100px;
-    left: 0;
-    -webkit-transition: 0.2s;
+    -webkit-transition-duration: 0.1s; 
+    transition-duration: .1s;
     width: 40%;
+}
+
+.form-group > input[type=text]:hover {
+    opacity: 1;
+    border-width: medium;
+    border-radius: 100px;
+    -webkit-transition-duration: 0.1s; 
+    transition-duration: .1s;
+}
+
+.form-group > input[type=text]:focus {
+  opacity: 1;
+  border-width: medium;
+  -webkit-transition-duration: 0.1s; 
+  transition-duration: .1s;
 }
 
 .form-group > label {
   font-weight: bold;
   font-size: 18px;
 }
-
-/** Dashboard **/
 
   #back-row > button {
     transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);

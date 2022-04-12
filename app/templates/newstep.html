@@ -11,8 +11,10 @@
         {{ render_field(form.is_setup_step)}}
     </fieldset>
     <div class="form-group m-3">
-        {{ form.submit(class="btn btn-outline-info") }}
-        <a class="btn btn-outline-danger" href="{{url_for('procedure',procedure_id=procedure_id)}}">Cancel</a>
+        <span id="savesave">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </span>
+        <a class="btn btn-outline-danger" href="{{url_for('procedure',procedure_id=procedure_id)}}" style="margin-left: 10px" id="savecancel">Cancel</a>
     </div>
 </form>
 {% endblock content %}

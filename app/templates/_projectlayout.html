@@ -11,7 +11,7 @@
       <h1 id="prod-header" style="padding-left: 35px; font-weight: bold">{{ current_project.name }}</h1>
     </div>
     <div class="row" style="padding-left: 35px;">
-      <a href="{{ url_for('dashboard', project_id = current_project.id) }}" style="z-index: 5"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="" style="font-weight: bold; background-color: rgb(37, 38, 38);">Dashboard</button></a>
+      <a href="{{ url_for('dashboard', project_id = current_project.id) }}" style="z-index: 5"><button type="button" class="btn btn-success float-end text-end btn-dark" data-toggle="modal" data-target="" style="font-weight: bold; background-color: rgb(37, 38, 38);" id="#dashbutton">Dashboard</button></a>
       <div class="col-1" style="z-index: 3">
         <div class="dropdown">
           {% if current_project.versions|length==1 %}
@@ -29,8 +29,8 @@
           </div>
         </div>
       </div>
-      <div class="col-1" style="padding-left: 37.5px; padding-top: 2.5px; z-index: 0;">
-        <a data-toggle="modal" data-target="#exampleModal" > <button class="newVersButton"> +  </button></a>
+      <div class="col-1" style="padding-left:275px; padding-top: 2.85px; z-index: 0; position: absolute;">
+        <a data-toggle="modal" data-target="#exampleModal"> <button class="newVersButton"> + </button></a>
       </div>
     </div>
   </div>
