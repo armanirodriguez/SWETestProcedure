@@ -34,4 +34,18 @@
     </div>
 </form>
 
+<script>
+    var radios = document.getElementsByTagName('input');
+    for (i = 0; i < radios.length; i++) {
+        if (radios[i].type == 'radio') {
+            radios[i].classList.add("btn-check");
+            radios[i].hidden = true;
+            var parent = radios[i].parentElement;
+            var label = parent.lastChild;
+            console.log(label);       
+            label.classList.add("btn", "btn-outline-primary");     
+        }
+    }
+</script>
+
 {% endblock content %}
