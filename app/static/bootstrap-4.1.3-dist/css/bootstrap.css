@@ -9138,6 +9138,21 @@ a.text-dark:hover, a.text-dark:focus {
   transition-duration: .2s;
 }
 
+#savecancel1 {
+  color: white;
+  font-weight: bold;
+  background-color: rgba(242, 92, 75, 0);
+  border-color: var(--red);
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+  transition-duration: .2s;
+}
+
+#savecancel1:hover{
+  background-color: var(--red);
+  transition-duration: .2s;
+}
 
 
 /*** Procedure Page ***/
