@@ -9458,4 +9458,18 @@ a.text-dark:hover, a.text-dark:focus {
     color: rgb(37,38,38);
   }
 
+/** Dashboard **/
+
+#dashboardResponse{
+  height: 400px;
+  width: 400px;
+  padding-bottom: 20px; margin-left: auto; margin-right: auto; display: block;
+}
+
+#dashboardHeader {
+  padding-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
 /******************************/
