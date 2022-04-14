@@ -25,7 +25,6 @@
     </div>
     <div>
         <h1 id="dashboardHeader"> Procedure Pass/Fail Ratio </h1>
-        <div>
             {% if current_project.procedures|length==1 %}
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" aria-haspopup="true"
                 aria-expanded="false" style="margin-left: auto; margin-right: auto; display: block;">{{ current_procedure_name }}</button>
@@ -42,7 +41,6 @@
                 {% endif %}
                 {% endfor %}
             </div>
-        </div>
         <div class="mt-5" id="dashboardResponse">
             <canvas id="myChart3" width="400px" height="500px"></canvas>
         </div>
@@ -154,6 +152,7 @@
             }
         }
     });
+
     document.getElementById("prod-header").innerHTML = '{{current_project.name}}' + ' - Dashboard';
     let btn = document.createElement("button");
     btn.id = "button-change"
@@ -161,7 +160,7 @@
     document.getElementById('back-row').appendChild(btn);
     btn.classList.add('btn', 'btn-primary');
     btn.addEventListener("click", function () {
-        window.history.back();
+        window.location.href = "{{ url_for('procedures', project_id=current_project.id)}}";
     });
 </script>
 
