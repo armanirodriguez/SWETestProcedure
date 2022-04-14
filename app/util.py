@@ -36,4 +36,4 @@ def ensure_procedure(project_id):
     ):
         curr_prod_name = prodNames[0]
         session["procedure_id"] = curr_prod_name.id
-        print("changed")
+        print("changed") 
