@@ -5,11 +5,59 @@
 <div>
     <div class="border-secondary">
         <div>
-            <div>
-                <div class="border-bottom">
-                    <h1 id="dashboardHeader"> Version Pass/Fail Ratio </h1>
-                    <div class="mb-5" id="dashboardResponse">
-                        <canvas id="myChart"></canvas>
+            <div class="row border-bottom">
+                <div class="col">
+                    <div>
+                        <h1 id="dashboardHeader"> Version Pass/Fail Ratio </h1>
+                        <div class="mb-5" id="dashboardResponse">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div hidden id="tableCol" class="col">
+                    <div style="height:500px; overflow-y: scroll;">
+                        <table hidden id="passingTable" class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align:center">Passed Steps</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for step in stepsPassing %}
+                                <tr id="prod-row">
+                                    <td id="prod-name">{{ step.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <table hidden id="pendingTable" class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align:center">Pending Steps</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for step in stepsPending %}
+                                <tr id="prod-row">
+                                    <td id="prod-name">{{ step.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <table hidden id="failingTable" class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="text-align:center">Failed Steps</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for step in stepsFailing %}
+                                <tr id="prod-row">
+                                    <td id="prod-name">{{ step.name }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -76,6 +124,34 @@
                     },
                 }]
             },
+            onClick: function(event, chartElements){
+                if(chartElements){
+                    let passingTable = document.getElementById("passingTable");
+                    let pendingTable = document.getElementById("pendingTable");
+                    let failingTable = document.getElementById("failingTable");
+                    let tableCol = document.getElementById("tableCol");
+                    console.log(chartElements[0].index);
+                    if(chartElements[0].index == 0){
+                        tableCol.hidden = false;
+                        passingTable.hidden = true;
+                        failingTable.hidden = false;
+                        pendingTable.hidden = true;
+                    }
+                    if(chartElements[0].index == 1){
+                        tableCol.hidden = false;
+                        passingTable.hidden = false;
+                        failingTable.hidden = true;
+                        pendingTable.hidden = true;
+                    }
+                    if(chartElements[0].index == 2){
+                        tableCol.hidden = false;
+                        passingTable.hidden = true;
+                        failingTable.hidden = true;
+                        pendingTable.hidden = false;
+                    }
+        }
+    },
+
         }
     });
     const versionList = JSON.parse('{{ versions | tojson }}');

@@ -374,10 +374,20 @@ def dashboard(project_id):
     procedure_steps = get_test_steps_and_results(procedure_steps, session["version_id"])
     steps = setup_steps + procedure_steps
 
-    # GRAPH 1 - PIE CHART DATA
+    stepsPassing = []
+    stepsFailing = []
+    stepsPending = []
     passingValues = []
     for step, value in steps:
         passingValues.append(value)
+        if(value == 0):
+            stepsPending.append(step)
+        elif(value == 1):
+            stepsPassing.append(step)
+        elif(value == -1):
+            stepsFailing.append(step)
+
+    # GRAPH 1 - PIE CHART DATA
     passingValues = [
         passingValues.count(-1),
         passingValues.count(1),
@@ -436,6 +446,9 @@ def dashboard(project_id):
         setup_steps=setup_steps,
         procedure_steps=procedure_steps,
         steps=steps,
+        stepsPassing = stepsPassing,
+        stepsFailing = stepsFailing,
+        stepsPending = stepsPending
     )
 
 
