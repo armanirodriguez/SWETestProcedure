@@ -46,7 +46,7 @@ class UserForm(FlaskForm):
             EqualTo("confirm_password", message="Passwords must match"),
         ],
     )
-    confirm_password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField("Confirm Password", validators=[DataRequired()])
     perm_admin = BooleanField("Admin access")
     perm_edit = BooleanField("Can Edit")
     submit = SubmitField("Create User")
