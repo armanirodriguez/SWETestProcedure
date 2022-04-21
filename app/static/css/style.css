@@ -141,6 +141,23 @@
     opacity:1;
   }
 
+  #pendLabel {
+    border-radius: 100px;
+    border-style: none;
+    padding: 10px;
+    background-color: #f7c601;
+    opacity: .75;
+    transition-duration: .4s;
+    cursor: pointer;
+  }
+
+  #pendLabel:hover{
+    transition-duration: .4s;
+    background-color: white;
+    color: #f7c601;
+    opacity:1;
+  }
+
   #notApprLabel {
     border-radius: 100px;
     border-style: none;

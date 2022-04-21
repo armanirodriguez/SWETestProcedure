@@ -2,6 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, session
 from flask_login import login_user, current_user, logout_user, login_required
 from app import app, db, bcrypt
 from app.forms import (
+    ChangePasswordForm,
     ProcedureForm,
     StepForm,
     ProjectForm,
@@ -51,6 +52,9 @@ def projects():
 @app.route("/deleteproject/<int:project_id>", methods=["POST"])
 @login_required
 def delete_project(project_id):
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+        return redirect(url_for("projects"))
     project = Project.query.get_or_404(project_id)
     db.session.delete(project)
     db.session.commit()
@@ -62,6 +66,9 @@ def delete_project(project_id):
 @app.route("/editproject/<int:project_id>", methods=["GET", "POST"])
 @login_required
 def edit_project(project_id):
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+        return redirect(url_for("projects"))
     editForm = ProjectForm()
     project = Project.query.get_or_404(project_id)
     if editForm.validate_on_submit():
@@ -74,6 +81,9 @@ def edit_project(project_id):
 @app.route("/newversion/<int:project_id>", methods=["POST"])
 @login_required
 def new_version(project_id):
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+        return redirect(request.referrer)
     name = request.form.get("version_name")
     if any(x.name == name for x in Version.query.filter_by(project_id=project_id)):
         flash("Version already exists", "warning")
@@ -81,7 +91,7 @@ def new_version(project_id):
         new_version = Version(project_id=project_id, name=name)
         db.session.add(new_version)
         db.session.commit()
-        flash("New version has been added.", "success`")
+        flash("New version has been added.", "success")
     return redirect(request.referrer)
 
 
@@ -111,15 +121,9 @@ def new_procedure(project_id):
     form = ProcedureForm()
     if form.validate_on_submit():
         procedure_name = form.procedure_name.data
-        approval = form.approval.data
-        approvalNotes = form.approvalNotes.data
         notes = form.notes.data
         myData = TestProcedure(
-            name=procedure_name,
-            approval=approval,
-            approvalNotes=approvalNotes,
-            notes=notes,
-            project_id=project_id,
+            name=procedure_name, notes=notes, project_id=project_id, approval=False
         )
         db.session.add(myData)
         db.session.commit()
@@ -138,12 +142,9 @@ def new_procedure(project_id):
 def edit_procedure(procedure_id):
     editForm = ProcedureForm()
     edit_procedure = TestProcedure.query.get_or_404(procedure_id)
-    editForm.approval.checked = edit_procedure.approval
     if editForm.validate_on_submit():
         edit_procedure.name = editForm.procedure_name.data
-        edit_procedure.approval = editForm.approval.data
         edit_procedure.notes = editForm.notes.data
-        edit_procedure.approvalNotes = editForm.approvalNotes.data
         db.session.commit()
         flash(f"Procedure {editForm.procedure_name.data} updated!", "dark")
         return redirect(url_for("procedures", project_id=edit_procedure.project_id))
@@ -159,15 +160,36 @@ def edit_procedure(procedure_id):
 @app.route("/deleteprocedure/<int:procedure_id>", methods=["POST"])
 @login_required
 def delete_procedure(procedure_id):
-    procedure = TestProcedure.query.get_or_404(procedure_id)
-    db.session.delete(procedure)
-    db.session.commit()
-    flash("Procedure successfully deleted!", "success")
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+    else:
+        procedure = TestProcedure.query.get_or_404(procedure_id)
+        db.session.delete(procedure)
+        db.session.commit()
+        flash("Procedure successfully deleted!", "success")
     return redirect(
         url_for(
             "procedures", procedure_id=procedure_id, project_id=procedure.project_id
         )
     )
+
+
+@app.route("/approveprocedure/<int:procedure_id>", methods=["POST"])
+@login_required
+def approve_procedure(procedure_id):
+    if not current_user.permissions & User.PERM_ADMIN:
+        flash("Permission denied", "danger")
+        return redirect(url_for("home"))
+    procedure = TestProcedure.query.get_or_404(procedure_id)
+    if request.form.get("deny.x") is not None:
+        procedure.approval = False
+    else:
+        procedure.approval = True
+    procedure.approvalNotes = request.form.get("notes")
+    if request.form.get("notes") == "":
+        procedure.approvalNotes = "Denied"
+    db.session.commit()
+    return redirect(url_for("admin"))
 
 
 # ===== Test Steps ===== #
@@ -211,10 +233,13 @@ def procedure(procedure_id):
 @app.route("/deletestep<int:step_id>", methods=["POST"])
 @login_required
 def delete_step(step_id):
-    step = TestStep.query.get_or_404(step_id)
-    db.session.delete(step)
-    db.session.commit()
-    flash("Step successfully deleted!", "success")
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+    else:
+        step = TestStep.query.get_or_404(step_id)
+        db.session.delete(step)
+        db.session.commit()
+        flash("Step successfully deleted!", "success")
     return redirect(url_for("procedure", procedure_id=step.procedure_id))
 
 
@@ -224,6 +249,9 @@ def delete_step(step_id):
 def edit_step(step_id):
     editForm = StepForm()
     edit_step = TestStep.query.get_or_404(step_id)
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+        return redirect(url_for("procedure", procedure_id=edit_step.procedure_id))
     if editForm.validate_on_submit():
         edit_step.name = editForm.step_name.data
         edit_step.instructions = editForm.instructions.data
@@ -241,6 +269,9 @@ def edit_step(step_id):
 @app.route("/procedure/<int:procedure_id>/newstep", methods=["GET", "POST"])
 @login_required
 def new_step(procedure_id):
+    if not current_user.permissions & User.PERM_EDIT:
+        flash("Permission denied", "danger")
+        return redirect(url_for("procedure", procedure_id=procedure_id))
     form = StepForm()
     if form.validate_on_submit():
         step_name = form.step_name.data
@@ -344,6 +375,7 @@ def edit_current_procedure(project_id, procedure_name):
     if new_procedure is None:
         return redirect(request.referrer)
     session["procedure_id"] = new_procedure.id
+
     return redirect(request.referrer)
 
 
@@ -380,11 +412,11 @@ def dashboard(project_id):
     passingValues = []
     for step, value in steps:
         passingValues.append(value)
-        if(value == 0):
+        if value == 0:
             stepsPending.append(step)
-        elif(value == 1):
+        elif value == 1:
             stepsPassing.append(step)
-        elif(value == -1):
+        elif value == -1:
             stepsFailing.append(step)
 
     # GRAPH 1 - PIE CHART DATA
@@ -446,9 +478,9 @@ def dashboard(project_id):
         setup_steps=setup_steps,
         procedure_steps=procedure_steps,
         steps=steps,
-        stepsPassing = stepsPassing,
-        stepsFailing = stepsFailing,
-        stepsPending = stepsPending
+        stepsPassing=stepsPassing,
+        stepsFailing=stepsFailing,
+        stepsPending=stepsPending,
     )
 
 
@@ -478,16 +510,38 @@ def logout():
     return redirect(url_for("home"))
 
 
+@app.route("/changepassword", methods=["GET", "POST"])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        password = form.new_password.data
+        confirm = form.confirm_password.data
+        if password != confirm:
+            flash("Passwords do not match.", "danger")
+        else:
+            current_user.password = bcrypt.generate_password_hash(password).decode(
+                "UTF-8"
+            )
+            db.session.commit()
+            flash("Password has been changed.", "success")
+        return redirect(url_for("home"))
+    return render_template("changepassword.html", form=form, title="Change Password")
+
+
 @app.route("/admin", methods=["GET", "POST"])
 @login_required
 def admin():
     if not current_user.permissions & User.PERM_ADMIN:
         flash("Permission denied", "danger")
-        return redirect(request.referrer)
+        if request.referrer is not None:
+            return redirect(request.referrer)
+        return redirect(url_for("home"))
     user_form = UserForm()
     if user_form.validate_on_submit():
         username = user_form.username.data
         password = user_form.password.data
+        confirm = user_form.confirm_password.data
         perm_admin = user_form.perm_admin.data
         perm_edit = user_form.perm_edit.data
         permissions = 0
@@ -495,7 +549,12 @@ def admin():
             permissions |= User.PERM_ADMIN
         if perm_edit:
             permissions |= User.PERM_EDIT
-        if (
+        if password != confirm:
+            flash("Passwords do not match.", "danger")
+            return render_template(
+                "admin.html", title="Admin Panel", user_form=user_form
+            )
+        elif (
             User.query.first() is not None
             and User.query.first().username.lower() == username.lower()
         ):
@@ -510,7 +569,17 @@ def admin():
             db.session.commit()
             flash("User has been added", "success")
 
-    return render_template("admin.html", title="Admin Panel", user_form=user_form)
+    unapproved_steps = [
+        x
+        for x in TestProcedure.query.filter_by(approval=False)
+        if x.approvalNotes is None or len(x.approvalNotes) == 0
+    ]
+    return render_template(
+        "admin.html",
+        title="Admin Panel",
+        user_form=user_form,
+        unapproved=unapproved_steps,
+    )
 
 
 # Creates tables for database. #

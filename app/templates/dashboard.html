@@ -25,7 +25,7 @@
                             <tbody>
                             {% for step in stepsPassing %}
                                 <tr id="prod-row">
-                                    <td id="prod-name">{{ step.name }}</td>
+                                    <td id="prod-name">{{ step.name }} from procedure <a href="{{ url_for('procedure', procedure_id=step.procedure_id) }}">{{ step.procedure.name }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -39,7 +39,7 @@
                             <tbody>
                             {% for step in stepsPending %}
                                 <tr id="prod-row">
-                                    <td id="prod-name">{{ step.name }}</td>
+                                    <td id="prod-name">{{ step.name }} from procedure <a href="{{ url_for('procedure', procedure_id=step.procedure_id) }}">{{ step.procedure.name }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -53,7 +53,7 @@
                             <tbody>
                             {% for step in stepsFailing %}
                                 <tr id="prod-row">
-                                    <td id="prod-name">{{ step.name }}</td>
+                                    <td id="prod-name">{{ step.name }} from procedure <a href="{{ url_for('procedure', procedure_id=step.procedure_id) }}">{{ step.procedure.name }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

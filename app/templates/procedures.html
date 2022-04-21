@@ -33,9 +33,11 @@
           {% if procedure.approval %}
               <td><button type="button" class="badge badge-success" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="apprLabel">Approved</button></td>
               {% include 'modalApprovalNotes.html' %}
-          {% else %}
-              <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="notApprLabel">Not Approved</button></td>
-              {% include 'modalApprovalNotes.html' %}
+          {% elif procedure.approvalNotes is none or procedure.approvalNotes | length == 0 %}
+                <td><button type="button" class="badge badge-warning" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="pendLabel">Pending Approval</button></td>
+            {% else %}
+                <td><button type="button" class="badge badge-danger" data-toggle="modal" data-target="#approvalModal{{procedure.id}}" id="notApprLabel">Denied</button></td>
+                {% include 'modalApprovalNotes.html' %}
           {% endif %}
           <td>
               <a href="{{ url_for('edit_procedure', procedure_id=procedure.id, project_id=project_id) }}"><img src="/static/img/pencil-square.svg"></a>

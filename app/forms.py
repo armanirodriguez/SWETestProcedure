@@ -7,9 +7,7 @@ from wtforms.validators import DataRequired, EqualTo
 
 class ProcedureForm(FlaskForm):
     procedure_name = StringField("Procedure Name", validators=[DataRequired()])
-    approval = BooleanField("Approval")
     notes = StringField("Description")
-    approvalNotes = StringField("Approval Notes")
     submit = SubmitField("Save")
 
 
@@ -50,6 +48,18 @@ class UserForm(FlaskForm):
     perm_admin = BooleanField("Admin access")
     perm_edit = BooleanField("Can Edit")
     submit = SubmitField("Create User")
+
+
+class ChangePasswordForm(FlaskForm):
+    new_password = PasswordField(
+        "Password",
+        validators=[
+            DataRequired(),
+            EqualTo("confirm_password", message="Passwords must match."),
+        ],
+    )
+    confirm_password = PasswordField("Confirm Password", validators=[DataRequired()])
+    submit = SubmitField("Change Password")
 
 
 def get_test_run_form(steps):

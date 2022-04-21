@@ -50,8 +50,9 @@
                                   {{ current_user.username }}
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{{ url_for('change_password') }}">Change Password</a>
                                     <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
-                                  </div>
+                                </div>
                             </div>
                     {% else %}
                         <a class="nav-link m-3 me-auto" href="{{ url_for("login") }}"><i class="octicon octicon-person mr-auto"></i> Login</a>
