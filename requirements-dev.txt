@@ -3,6 +3,8 @@ click==8.0.4
 distlib==0.3.4
 filelock==3.6.0
 Flask==2.0.3
+Flask-Bcrypt==0.7.1
+Flask-Login==0.6.0
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.0
 flask_testing==0.8.1

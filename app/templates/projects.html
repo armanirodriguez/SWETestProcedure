@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 
 {% if projects | length == 0 %}
@@ -14,21 +14,22 @@
 </div>
 {% else %}
 <div class="row">
-    <button type="button" class="btn btn-primary offset-md-1" data-toggle="modal" data-target="#exampleModal">Create a New Project</button>
+    <button type="button" class="btn btn-primary offset-md-1" data-toggle="modal" data-target="#exampleModal" id="newProjButton"> Create a New Project</button>
 </div><br>
 
-<div class="container">
+<div class="container" id="marginFix">
     <div class="row row-cols-3">
     {% for project in projects %}
     <div class="row">
-        <div class="card bg-secondary text-white" style="width: 18rem;">
+        <div class="card bg-secondary text-white" style="width: 24rem;">
             <div class="card-body">
-                <h5 class="card-title">{{ project.name }}</h5>
-                <h6 class="card-subtitle mb-2 text-grey">Created {{ project.date_created.strftime('%B %d, %Y') }}</h6>
-                <p class="card-text">{{ project.procedures | length }} Test Procedures</p>
-                <p class="card-text">{{ project.procedures | map (attribute='steps') | map('length') | sum }} Test Steps</p>
-                <div class="row">
-                    <a href="{{ url_for('procedures', project_id=project.id) }}" class="col btn btn-primary">Open Project</a>
+                <h5 class="card-title" style="font-weight: bold">{{ project.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-grey" style="color: rgba(255,255,255,.75)">Created {{ project.date_created.strftime('%B %d, %Y') }}</h6>
+                <p class="card-text" style="color: rgba(128, 219, 242,.75)">{{ project.procedures | length }} Test Procedures</p>
+                <p class="card-text" style="color: rgba(128, 219, 242,.75)">{{ project.procedures | map (attribute='steps') | map('length') | sum }} Test Steps</p>
+                <div class="row" style="margin-left: -55px;">
+                    <a href="{{ url_for('procedures', project_id=project.id) }}" class="col btn btn-primary" id="openProjButton">Open Project</a>
+
                     <a class="col-2" href="" data-toggle="modal" data-target="#editModal{{project.id}}"><img src="/static/img/pencil-square.svg" alt="Edit"></a>
                     <form style="margin-bottom:5px;" class="col-2" method="post" action="{{ url_for('delete_project', project_id=project.id) }}">
                         <input type="image" name="submit" src="/static/img/trash3-fill.svg"></button>
@@ -81,6 +82,7 @@
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group">
                     {{ render_field(form.project_name, class="form-control form-control-lg") }}
+                    {{ render_field(form.initial_version_name, class="form-control form-control-lg") }}
                 </fieldset>
                     {{ form.submit(class="btn btn-primary") }}
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

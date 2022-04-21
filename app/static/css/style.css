@@ -1,0 +1,465 @@
+/* Modifications by Harman Ransi */
+
+ /*** Homepage modifications ***/
+ .m-3Mod4 {
+    text-align: center;
+    margin: 2rem !important;
+    font-size: 80px;
+    z-index: 100;
+    position: relative;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .m-3Mod4 {
+      font-size: 50px;
+    }
+
+  }
+
+  .m-3Mod {
+    text-align: center;
+    padding-top: 50px;
+    z-index: 100;
+    position: relative;
+  }
+
+  .responsive1{
+    width:100%;
+    height: 1100px;
+    margin-top: -500px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .responsive1 {
+      height: 1300px;
+    }
+
+  }
+
+  .m-3Mod3 {
+    text-align: center;
+    padding-top: 17px;
+    padding-bottom: 30px;
+    margin: 1rem;
+    z-index: 100;
+    position: relative;
+  }
+
+  .m-3Mod2 {
+    padding-top: 40px;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #4CAF50;
+    font-family: "Arial";
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 15px 32px;
+    transition-duration: .4s;
+    z-index: 100;
+  }
+
+  .m-3Mod2:Hover {
+    color: #4CAF50;
+    background-color: white;
+  }
+/*****************************/
+
+/*** Run Test Page **/
+.form-group > ul {
+  font-weight: bold;
+  padding-left: 40px;
+}
+
+#savesave > span {
+  background-color: var(--cyan);
+  color: white;
+  font-weight: bold;
+}
+
+#savesave > input{
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+}
+
+#savesave > input:hover{
+  background-color: var(--cyan);
+}
+
+#savecancel {
+  color: white;
+  font-weight: bold;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+  transition-duration: .2s;
+}
+
+#savecancel > input:hover{
+  background-color: var(--red);
+  transition-duration: .2s;
+}
+
+#savecancel1 {
+  color: white;
+  font-weight: bold;
+  background-color: rgba(242, 92, 75, 0);
+  border-color: var(--red);
+  border-radius: 20px;
+  font-weight: bold;
+  border-width: medium;
+  transition-duration: .2s;
+}
+
+#savecancel1:hover{
+  background-color: var(--red);
+  transition-duration: .2s;
+}
+
+
+/*** Procedure Page ***/
+
+  #apprLabel {
+    border-radius: 100px;
+    border-style: none;
+    padding: 10px;
+    background-color: #4CAF50;
+    opacity: .75;
+    transition-duration: .4s;
+    cursor: pointer;
+  }
+
+  #apprLabel:hover{
+    transition-duration: .4s;
+    background-color: white;
+    color: #4CAF50;
+    opacity:1;
+  }
+
+  #pendLabel {
+    border-radius: 100px;
+    border-style: none;
+    padding: 10px;
+    background-color: #f7c601;
+    opacity: .75;
+    transition-duration: .4s;
+    cursor: pointer;
+  }
+
+  #pendLabel:hover{
+    transition-duration: .4s;
+    background-color: white;
+    color: #f7c601;
+    opacity:1;
+  }
+
+  #notApprLabel {
+    border-radius: 100px;
+    border-style: none;
+    padding: 10px;
+    background-color: #fc664c;
+    opacity: .75;
+    transition-duration: .4s;
+    cursor: pointer;
+  }
+
+  #notApprLabel:hover{
+    transition-duration: .4s;
+    background-color: white;
+    color: #fc664c;
+    opacity:1;
+  }
+
+  .prodNameLabel{
+    color: white;
+    font-weight: bold;
+    border: 1px solid white;
+    padding: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 100px;
+    font-size: 16px;
+    transition-duration: .4s;
+  }
+
+  .prodNameLabel:hover{
+    background-color: white;
+    transition-duration: .4s;
+    text-decoration: none;
+    color: rgb(60, 61, 66);
+  }
+
+  #searchBar{
+    border: 1px solid white;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    opacity: .75;
+    border-width: thin;
+    border-radius: 100px;
+    left: 0;
+      -webkit-transition: 0.2s;
+    width: 75px;
+  }
+
+  #searchBar:hover {
+    opacity: 1;
+    border-width: medium;
+    left: 0;
+    -webkit-transition: 0.4s;
+    font-weight: bold;
+  }
+
+  #searchBar:focus-within {
+    -webkit-transition: 0.4s;
+    border-width: medium;
+    font-weight: normal;
+    opacity: 1;
+  }
+
+  #searchBar:focus::placeholder {
+    color: transparent;
+  }
+
+  #newProdButton {
+    border-radius: 100px;
+    font-weight: bold;
+    opacity: .85;
+    transition-duration:.4s;
+    -webkit-transition: .4s;
+    padding: 10px;
+    padding-left: 15px;
+    border-style: none;
+    padding-right: 15px;
+
+  }
+
+  #newProdButton:hover {
+    background-color: white;
+    color: #4CAF50;
+    opacity: 1;
+    transition-duration: .4s;
+    -webkit-transition: .4s;
+  }
+
+/*****************************/
+
+/*** Project page **/
+
+  #marginFix {
+    margin-left: 50px;
+  }
+
+  #newProjButton {
+    border-radius: 100px;
+    font-weight: bold;
+    opacity: .85;
+    transition-duration:.4s;
+    -webkit-transition: .4s;
+    padding: 10px;
+    padding-left: 15px;
+    border-style: none;
+    padding-right: 15px;
+    margin-left: 50px;
+    background-color: #4CAF50;
+  }
+
+  #newProjButton:hover {
+    background-color: white;
+    color: #4CAF50;
+    opacity: 1;
+    transition-duration: .4s;
+    -webkit-transition: .4s;
+  }
+
+  #openProjButton {
+    border-radius: 100px;
+    font-weight: bold;
+    transition-duration:.4s;
+    -webkit-transition: .4s;
+    padding: 10px;
+    padding-left: 15px;
+    border-style: none;
+    padding-right: 15px;
+    margin-left: 50px;
+    background-color: rgba(255,255,255,0);
+    border: 1px solid white;
+  }
+
+  #openProjButton:hover {
+    background-color: white;
+    color: rgba(128, 136, 138,1);
+    transition-duration: .4s;
+    -webkit-transition: .4s;
+  }
+
+/****************************/
+
+/** Menu Bar  ****/
+  #tabAnimation {
+    font-weight: bold;
+    background-image: linear-gradient(
+      to right,
+      #54b3d6,
+      #54b3d6 50%,
+      #fff 50%
+    );
+    background-size: 200% 100%;
+    background-position: -100%;
+    display: inline-block;
+    padding: 5px 0;
+    position: relative;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #tabAnimation:before {
+    content: '';
+    background: #54b3d6;
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  #tabAnimation:hover {
+  background-position: 0;
+  }
+
+  #tabAnimation:hover::before {
+    width:100%;
+  }
+
+  #backButtons {
+    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+    font-weight: bold;
+    border-style: none;
+    font-size: 15px;
+    margin: 10px auto auto 10px;
+  }
+
+  #backButtons:hover {
+    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+    font-weight: bold;
+    background-color: white;
+    color: rgba(41, 118, 227, 1);
+  }
+
+  .runTestButton{
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 25px;
+    font-weight: bold;
+    border-style: none;
+  }
+
+  #runAndAddButton{
+    font-weight: bold;
+    -webkit-transition-duration: .4s;
+    border-style: none;
+  }
+
+  #runAndAddButton:hover{
+    font-weight: bold;
+    -webkit-transition-duration: .4s;
+    background-color: white;
+    color: #4CAF50;
+  }
+
+/** Create New Prod **/
+.form-group > input[type=text],
+.form-group > input[type=password]
+{
+  border: 1px solid white;
+    background-color: rgba(0,0,0,0);
+    color: white;
+    opacity: .5;
+    border-width: thin;
+    border-radius: 100px;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: .1s;
+    width: 40%;
+}
+
+.form-group > input[type=text]:hover,
+.form-group > input[type=password]:hover
+{
+    opacity: 1;
+    border-width: medium;
+    border-radius: 100px;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: .1s;
+}
+
+.form-group > input[type=text]:focus,
+.form-group > input[type=password]:focus
+{
+  opacity: 1;
+  border-width: medium;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: .1s;
+}
+
+.form-group > label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+  #back-row > button {
+    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+    font-weight: bold;
+    border-style: none;
+    font-size: 15px;
+    margin-top: 10px;
+    margin-left: 185px;
+    position: absolute;
+  }
+
+  #back-row > button:hover {
+    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+    font-weight: bold;
+    background-color: white;
+    color: rgba(41, 118, 227, 1);
+  }
+
+  .newVersButton{
+    border-style: none;
+    background-color:rgba(37, 38, 38, 1);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    -webkit-transition-duration: .4s;
+  }
+
+  .newVersButton:hover{
+    cursor: pointer;
+    -webkit-transition-duration: .4s;
+    background-color:rgba(255, 255, 255, 1);
+    color: rgb(37,38,38);
+  }
+
+/** Dashboard **/
+
+#dashboardResponse{
+  height: 400px;
+  width: 400px;
+  padding-bottom: 20px; margin-left: auto; margin-right: auto; display: block;
+}
+
+#dashboardHeader {
+  padding-top: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/******************************/

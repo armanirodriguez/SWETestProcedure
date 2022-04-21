@@ -1,17 +1,18 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 <form method="POST" action="{{ url_for('new_procedure', project_id=project_id) }}">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-        <legend class="border-bottom m-3">Create a new procedure</legend>
+        <legend class="border-bottom m-3" style="font-weight: bold; font-size: 35px;"> Create a New Procedure</legend>
         {{ render_field(form.procedure_name, class="form-control form-control-lg") }}
         {{ render_field(form.notes, class="form-control form-control-lg")}}
-        {{ render_field(form.approval) }}
     </fieldset>
     <div class="form-group m-3">
-        {{ form.submit(class="btn btn-outline-info") }}
-        <a href="{{ url_for('procedures', project_id=project_id) }}" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+        <span id="savesave">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </span>
+        <a href="{{ url_for('procedures', project_id=project_id) }}" class="btn btn-danger" data-dismiss="modal" id="savecancel1" style="margin-left: 10px">Cancel</a>
     </div>
 </form>
 {% endblock content %}

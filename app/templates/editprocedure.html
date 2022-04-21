@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 <form method="POST" action="{{ url_for('edit_procedure', procedure_id=edit_procedure.id) }}">
     {{ editForm.hidden_tag() }}
@@ -7,7 +7,6 @@
         <legend class="border-bottom m-3">Update a procedure</legend>
         {{ render_field(editForm.procedure_name, class="form-control form-control-lg", value=edit_procedure.name) }}
         {{ render_field(editForm.notes, class="form-control form-control-lg", value=edit_procedure.notes)}}
-        {{ render_field(editForm.approval) }}
     </fieldset>
     <div class="form-group m-3">
             {{ editForm.submit(class="btn btn-outline-info") }}

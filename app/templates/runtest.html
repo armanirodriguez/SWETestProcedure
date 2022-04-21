@@ -1,5 +1,5 @@
 {% from "_formhelpers.html" import render_field %}
-{% extends "layout.html" %}
+{% extends "_layout.html" %}
 {% block content %}
 <style>
     ul{
@@ -10,15 +10,15 @@
 <form method="POST" action="{{ url_for('run_test_procedure', procedure_id=procedure_id) }}">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-        <legend class="border-bottom m-3">Running Test Procedure: {{ procedure_name }}</legend>
+        <legend class="border-bottom m-3" style="font-weight: bold; padding-bottom: 3px;">Running Test Procedure: {{ procedure_name }}</legend>
         {% for field in form %}
             {% if field.description == "teststep" %}
-                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                    <div class="card-header">{{ steps[ loop.index0 ].name }}</div>
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem; margin-left: 15px;">
+                    <div class="card-header" style="font-weight: bold; font-size: 25px;">{{ steps[ loop.index0 ].name }}</div>
                     <div class="card-body">
-                        <h5 class="card-title">Instructions:</h5>
+                        <h5 class="card-title" style="font-weight: bold; font-size: 22.5px;">Instructions:</h5>
                         <p class="card-text">{{ steps[ loop.index0 ].instructions }}</p>
-                        <h5 class="card-title">Pass Condition</h5>
+                        <h5 class="card-title" style="font-weight: bold; font-size: 22.5px;">Pass Condition</h5>
                         <p class="card-text">{{ steps[ loop.index0 ].pass_condition }}</p>
                     </div>
                 </div>
@@ -26,10 +26,13 @@
             {% endif %}
         {% endfor %}
     </fieldset>
-    <div class="input-group mb-3">
+    <div class="input-group mb-3" style="margin-left: 10px;">
+        <span id="savesave">
         {{ form.submit(class="btn btn-outline-info") }}
-        <a class="btn btn-outline-danger" href="{{url_for('procedure',procedure_id=procedure_id)}}">Cancel</a>
+        </span>
+        <a class="btn btn-outline-danger" href="{{url_for('procedure',procedure_id=procedure_id)}}" id="savecancel" style="margin-left: 10px;">Cancel</a>
     </div>
 </form>
+
 
 {% endblock content %}

@@ -1,0 +1,55 @@
+{% extends "_layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+
+<form method="POST" action="">
+    {{ user_form.hidden_tag() }}
+    <fieldset class="form-group" enctype="multipart/form-data">
+        <legend class="border-bottom mb-4">Create A New User</legend>
+        {% for field, errors in user_form.errors.items() %}
+        <div class="danger">
+            <div class="alert alert-dismissible alert-danger">
+                {{ user_form[field].label }}: {{ ', '.join(errors) }}
+            </div>
+        </div>
+        {% endfor %}
+        {{ render_field(user_form.username, class="form-control form-control-lg") }}
+        {{ render_field(user_form.password, class="form-control form-control-lg") }}
+        {{ render_field(user_form.confirm_password, class="form-control form-control-lg") }}
+        {{ render_field(user_form.perm_admin, class="") }}
+        {{ render_field(user_form.perm_edit, class="") }}
+        <span id="savesave">{{ user_form.submit(class='btn btn-primary') }}</span>
+    </fieldset>
+
+</form>
+<br><br>
+<h3>Approve/Deny Test Procedures</h3>
+<table class="table table-hover table-striped table-dark procedure-table" style="border-radius: 5px; margin: 0 auto; width: 95%;">
+    <thead>
+        <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Name</th>
+            <th scope="col">Approval Notes</th>
+            <th scope="col">Approve/Deny</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for procedure in unapproved %}
+        <tr id="prod-row">
+            <td>{{ procedure.project.name }}</td>
+            <td><a href="{{url_for('procedure',procedure_id=procedure.id)}}"> {{procedure.name}} </a></td>
+            <td>
+                <form style="margin-bottom:5px;" method="post" action="{{url_for('approve_procedure',procedure_id=procedure.id)}}">
+                    <input type="input" name="notes">
+            </td>
+            <td>
+                    <input type="image" name="approve" src="/static/img/check2-all.svg"></button>
+                    <input type="image" name="deny" src="/static/img/circle-fill.svg"></button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}

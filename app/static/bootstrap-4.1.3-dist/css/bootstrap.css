@@ -1951,6 +1951,7 @@ textarea.form-control {
   margin-bottom: 1rem;
 }
 
+
 .form-text {
   display: block;
   margin-top: 0.25rem;
@@ -3002,6 +3003,7 @@ input[type="button"].btn-block {
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
+
 }
 
 .dropdown-menu-right {
@@ -9028,3 +9030,4 @@ a.text-dark:hover, a.text-dark:focus {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+
