@@ -2,7 +2,7 @@ import os
 import pytest
 from app import app
 
-from project.tests import db as _db
+from tests import db as _db
 
 
 TESTDB = ''
