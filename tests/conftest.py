@@ -2,12 +2,12 @@ import os
 import pytest
 from app import app
 
-from tests import db as _db
+from tests import site as db
 
 
-TESTDB = ''
-TESTDB_PATH = "".format(TESTDB)
-TEST_DATABASE_URI = '' + TESTDB_PATH
+TESTDB = 'site.db'
+TESTDB_PATH = "/opt/project/data/{}".format(TESTDB)
+TEST_DATABASE_URI = 'sqlite:///' + TESTDB_PATH
 
 
 @pytest.fixture(scope='session')
@@ -37,14 +37,14 @@ def db(app, request):
         os.unlink(TESTDB_PATH)
 
     def teardown():
-        _db.drop_all()
+        db.drop_all()
         os.unlink(TESTDB_PATH)
 
-    _db.app = app
-    _db.create_all()
+    db.app = app
+    db.create_all()
 
     request.addfinalizer(teardown)
-    return _db
+    return db
 
 
 @pytest.fixture(scope='function')
