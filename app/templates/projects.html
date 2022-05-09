@@ -46,7 +46,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="POST" action="{{ url_for('projects') }}">
+                                    <form method="post" action="{{ url_for('edit_project', project_id=project.id) }}">
                                         {{ form.hidden_tag() }}
                                         <fieldset class="form-group">
                                             {{ render_field(form.project_name, class="form-control form-control-lg", value=project.name) }}

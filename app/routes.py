@@ -8,6 +8,7 @@ from app.forms import (
     ProjectForm,
     LoginForm,
     UserForm,
+    EditProjectForm,
     get_test_run_form,
 )
 from app.models import TestProcedure, TestStep, Project, TestRun, Version, User
@@ -69,7 +70,7 @@ def edit_project(project_id):
     if not current_user.permissions & User.PERM_EDIT:
         flash("Permission denied", "danger")
         return redirect(url_for("projects"))
-    editForm = ProjectForm()
+    editForm = EditProjectForm()
     project = Project.query.get_or_404(project_id)
     if editForm.validate_on_submit():
         project.name = editForm.project_name.data
@@ -495,6 +496,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             flash(f"Welcome, {form.username.data}!", "success")
+            if current_user.force_password_change:
+                flash("Please change your password before continuing.", "warning")
+                return redirect(url_for("change_password"))
             next_route = request.args.get("next")
             return redirect(next_route) if next_route else redirect(url_for("home"))
         else:
@@ -523,6 +527,8 @@ def change_password():
             current_user.password = bcrypt.generate_password_hash(password).decode(
                 "UTF-8"
             )
+            if current_user.force_password_change:
+                current_user.force_password_change = False
             db.session.commit()
             flash("Password has been changed.", "success")
         return redirect(url_for("home"))

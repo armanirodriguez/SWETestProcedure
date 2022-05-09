@@ -28,6 +28,12 @@ class ProjectForm(FlaskForm):
     editSubmit = SubmitField("Save")
 
 
+class EditProjectForm(FlaskForm):
+    project_name = StringField("Project Name", validators=[DataRequired()])
+    submit = SubmitField("Create Project")
+    editSubmit = SubmitField("Save")
+
+
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     password = PasswordField("Password", validators=[DataRequired()])
